@@ -10,6 +10,7 @@ function App() {
   // const [customSelections, setCustomSelections] = useState([]);
 
   const [myNodes, setMyNode] = useState(dummynodes);
+  const [isDirected, setIsDirected] = useState("none");
 
   const [myEdges, setMyEdges] = useState(dummyedges);
   const [nodeCount, setNodeCount] = useState(myNodes.length);
@@ -107,11 +108,12 @@ function App() {
   }
 
   function AddEdge(sourceId, targetId) {
+    const random = Math.floor(Math.random() * 100);
     const newEdge = {
       id: `E-${sourceId}->${targetId}`,
       source: sourceId,
       target: targetId,
-      label: `Edge ${sourceId}-${targetId}`,
+      label: `${random}`,
     };
     setMyEdges([...myEdges, newEdge]);
     setSelections([]);
@@ -141,11 +143,27 @@ function App() {
   function ClearCanvas() {
     setMyEdges([]);
     setMyNode([]);
+    setNodeCount(0);
   }
 
-  // function handleIncrementalSelection(node) {
-  //   addSelection(node);
-  // }
+  function convertToAdjacencyGraph(edges) {
+    const graph = {};
+    edges.forEach((edge) => {
+      const { id, source, target, label } = edge;
+      if (!graph[id]) {
+        graph[id] = { source, target, weight: label };
+      }
+    });
+    return graph;
+  }
+
+  function handleDirectedOrUnDirected() {
+    if (isDirected === "end") {
+      setIsDirected("none");
+    } else {
+      setIsDirected("end");
+    }
+  }
 
   return (
     <>
@@ -173,6 +191,9 @@ function App() {
         >
           Add Edge
         </Button1>
+        <Button1 onClick={() => console.log(convertToAdjacencyGraph(myEdges))}>
+          Generate AG
+        </Button1>
         <Button1
           disabled={disableDeleteNode}
           onClick={() => DeleteNode(selections[0])}
@@ -185,6 +206,9 @@ function App() {
         >
           Delete Edge
         </Button1>
+        <Button1 onClick={handleDirectedOrUnDirected}>
+          Toggle Directed/Undirected
+        </Button1>
         <div
           className="w-[75%] h-[75%] fixed top-1/2 left-1/2"
           style={{ transform: "translate(-50%, -50%)" }}
@@ -195,6 +219,9 @@ function App() {
             edges={myEdges}
             actives={actives}
             theme={theme}
+            edgeLabelPosition="inline"
+            labelType="all"
+            edgeArrowPosition={isDirected}
             onEdgeClick={handleEdgeClick}
             selections={selections}
             onCanvasClick={onCanvasClick}
