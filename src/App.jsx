@@ -17,6 +17,28 @@ function App() {
   const [disableDeleteEdge, setDisableDeleteEdge] = useState(true);
   const [disableAddEdge, setDisableAddEdge] = useState(true);
 
+  const [adjacencyMatrix, setAdjacencyMatrix] = useState([]);
+  function create2DArray(rows, cols) {
+    let arr = new Array(rows);
+    for (let i = 0; i < rows; i++) {
+      arr[i] = new Array(cols).fill(0); // Initialize all elements to 0
+    }
+    return arr;
+  }
+
+  function createAdjacencyGraph() {
+    const graph = create2DArray(nodeCount + 1, nodeCount + 1);
+    myEdges.forEach((edge) => {
+      const { source, target, label } = edge;
+      graph[source][target] = label;
+      if (isDirected === "none") {
+        graph[target][source] = label;
+      }
+    });
+    setAdjacencyMatrix(graph);
+    console.log(graph);
+  }
+
   const {
     selections,
     onNodeClick,
@@ -193,6 +215,9 @@ function App() {
           onClick={() => AddEdge(selections[0], selections[1])}
         >
           Add Edge
+        </Button1>
+        <Button1 onClick={createAdjacencyGraph}>
+          console log adjacencyMatrix
         </Button1>
         <Button1 onClick={() => console.log(convertToAdjacencyGraph(myEdges))}>
           Generate AG
