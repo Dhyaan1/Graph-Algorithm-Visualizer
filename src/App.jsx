@@ -4,18 +4,17 @@ import { GraphCanvas, useSelection } from "reagraph";
 import { dummyedges, dummynodes } from "./assets/data/dummydata";
 import Button1 from "./components/Buttons/Button1";
 import theme from "./assets/theme/theme";
+import AddNodes from "./components/AddNodes";
+import AddEdges from "./components/AddEdges";
 
 function App() {
   const graphRef = useRef(null);
   const [myNodes, setMyNode] = useState(dummynodes);
   const [isDirected, setIsDirected] = useState("none");
-
   const [myEdges, setMyEdges] = useState(dummyedges);
   const [nodeCount, setNodeCount] = useState(myNodes.length);
-
   const [disableDeleteNode, setDisableDeleteNode] = useState(true);
   const [disableDeleteEdge, setDisableDeleteEdge] = useState(true);
-  const [disableAddEdge, setDisableAddEdge] = useState(true);
 
   const [adjacencyMatrix, setAdjacencyMatrix] = useState([]);
   function create2DArray(rows, cols) {
@@ -61,7 +60,6 @@ function App() {
     if (selections.length === 0) {
       setDisableDeleteNode(true);
       setDisableDeleteEdge(true);
-      setDisableAddEdge(true);
     }
     //only for single node selection
     if (selections.length === 1 && !selections[0].includes("->")) {
@@ -72,13 +70,6 @@ function App() {
       setDisableDeleteEdge(false);
     }
     //only for two node selection
-    if (
-      selections.length === 2 &&
-      !selections[0].includes("->") &&
-      !selections[1].includes("->")
-    ) {
-      setDisableAddEdge(false);
-    }
   }, [selections]);
 
   function handleNodeClick(node) {
@@ -95,44 +86,11 @@ function App() {
   function OnNodeClickNew(e) {
     console.log("Node Clicked", e);
   }
-
-  function AddNode() {
-    const newNode = {
-      id: `${nodeCount + 1}`,
-      label: `${nodeCount + 1}`,
-    };
-    setNodeCount(nodeCount + 1);
-    setMyNode([...myNodes, newNode]);
-  }
-
   function DeleteNode(NodeId) {
     const newNodes = myNodes.filter((node) => node.id !== NodeId);
     setMyNode(newNodes);
     setDisableDeleteNode(true);
     setSelections([]);
-  }
-
-  function AddEdge(sourceId, targetId) {
-    if (
-      myEdges.find(
-        (edge) =>
-          (edge.source === sourceId && edge.target === targetId) ||
-          (edge.source === targetId && edge.target === sourceId)
-      )
-    ) {
-      alert("Edge already exists");
-      return;
-    }
-    const random = Math.floor(Math.random() * 100);
-    const newEdge = {
-      id: `${sourceId}->${targetId}`,
-      source: sourceId,
-      target: targetId,
-      label: `${random}`,
-    };
-    setMyEdges([...myEdges, newEdge]);
-    setSelections([]);
-    setDisableAddEdge(true);
   }
 
   function DeleteEdge(EdgeId) {
@@ -197,6 +155,18 @@ function App() {
         <Button1 onClick={() => console.log(myNodes)}>
           Console Log Nodes
         </Button1>
+        <AddNodes
+          nodeCount={nodeCount}
+          setNodeCount={setNodeCount}
+          myNodes={myNodes}
+          setMyNode={setMyNode}
+        />
+        <AddEdges
+          myEdges={myEdges}
+          setMyEdges={setMyEdges}
+          selections={selections}
+          setSelections={setSelections}
+        />
         <Button1 onClick={() => console.log(actives)}>
           Console Log Actives
         </Button1>
@@ -208,13 +178,6 @@ function App() {
         </Button1>
         <Button1 onClick={() => console.log(myEdges)}>
           Console Log all Edges
-        </Button1>
-        <Button1 onClick={AddNode}>Add Node</Button1>
-        <Button1
-          disabled={disableAddEdge}
-          onClick={() => AddEdge(selections[0], selections[1])}
-        >
-          Add Edge
         </Button1>
         <Button1 onClick={createAdjacencyGraph}>
           console log adjacencyMatrix
