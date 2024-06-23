@@ -157,12 +157,22 @@ function App() {
     return graph;
   }
 
-  function handleDirectedOrUnDirected() {
-    if (isDirected === "end") {
-      setIsDirected("none");
-    } else {
-      setIsDirected("end");
-    }
+  function handleDirectedOrUnDirected(event) {
+    setIsDirected(event.target.value);
+  }
+
+  // Make a function to chnage the color of all the nodes in a given array of nodes ids
+  function handleTraversalColorChange(nodeIds) {
+    const newNodes = myNodes.map((node) => {
+      if (nodeIds.includes(node.id)) {
+        return {
+          ...node,
+          fill: "#F6F930",
+        };
+      }
+      return node;
+    });
+    setMyNode(newNodes);
   }
 
   return (
@@ -206,8 +216,31 @@ function App() {
         >
           Delete Edge
         </Button1>
-        <Button1 onClick={handleDirectedOrUnDirected}>
-          Toggle Directed/Undirected
+        <div onChange={handleDirectedOrUnDirected}>
+          <input
+            type="radio"
+            value="end"
+            name="direction"
+            checked={isDirected === "end"}
+          />
+
+          <label className="text-white" htmlFor="directed">
+            Directed
+          </label>
+          <input
+            type="radio"
+            value="none"
+            name="direction"
+            checked={isDirected === "none"}
+          />
+          <label className="text-white" htmlFor="undirected">
+            Undirected
+          </label>
+        </div>
+        <Button1
+          onClick={() => handleTraversalColorChange(["n-1", "n-2", "n-3"])}
+        >
+          Change Color of 3 nodes[n-1, n-2, n-3]
         </Button1>
         <div
           className="w-[75%] h-[75%] fixed top-1/2 left-1/2"

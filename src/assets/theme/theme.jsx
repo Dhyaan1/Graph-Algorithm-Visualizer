@@ -1,5 +1,5 @@
 const theme = {
-  canvas: { background: "#000000" },
+  canvas: { background: "#201E1F" },
   node: {
     fill: "#451F55",
     activeFill: "#EE2677",
@@ -7,8 +7,8 @@ const theme = {
     selectedOpacity: 1,
     inactiveOpacity: 0.8,
     label: {
-      color: "#2A6475",
-      stroke: "transparent",
+      color: "#fff",
+      stroke: "#201E1F",
       activeColor: "#1DE9AC",
     },
     subLabel: {
@@ -32,8 +32,8 @@ const theme = {
     selectedOpacity: 1,
     inactiveOpacity: 0.1,
     label: {
-      stroke: "#fff",
-      color: "#2A6475",
+      stroke: "#201E1F",
+      color: "#fff",
       activeColor: "#1DE9AC",
       fontSize: 6,
     },
