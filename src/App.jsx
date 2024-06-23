@@ -7,8 +7,6 @@ import theme from "./assets/theme/theme";
 
 function App() {
   const graphRef = useRef(null);
-  // const [customSelections, setCustomSelections] = useState([]);
-
   const [myNodes, setMyNode] = useState(dummynodes);
   const [isDirected, setIsDirected] = useState("none");
 
@@ -37,20 +35,6 @@ function App() {
     pathHoverType: "all",
     selections: [],
   });
-
-  // useEffect(() => {  // This useEffect is used to automatically add edge between two selected nodes
-  //   if (selections.length === 2) {
-  //     const newEdge = {
-  //       id: `${selections[0]}->${selections[1]}`,
-  //       source: selections[0],
-  //       target: selections[1],
-  //       label: `Edge ${selections[0]}-${selections[1]}`,
-  //     };
-  //     setMyEdges([...myEdges, newEdge]);
-  //     setSelections([]);
-  //   }
-  // }, [selections, myEdges, setSelections]);
-
   useEffect(() => {
     if (selections.length === 0) {
       setDisableDeleteNode(true);
@@ -58,18 +42,18 @@ function App() {
       setDisableAddEdge(true);
     }
     //only for single node selection
-    if (selections.length === 1 && selections[0][0] === "n") {
+    if (selections.length === 1 && !selections[0].includes("->")) {
       setDisableDeleteNode(false);
     }
     //only for single edge selection
-    if (selections.length === 1 && selections[0][0] === "E") {
+    if (selections.length === 1 && selections[0].includes("->")) {
       setDisableDeleteEdge(false);
     }
     //only for two node selection
     if (
       selections.length === 2 &&
-      selections[0][0] === "n" &&
-      selections[1][0] === "n"
+      !selections[0].includes("->") &&
+      !selections[1].includes("->")
     ) {
       setDisableAddEdge(false);
     }
@@ -91,9 +75,8 @@ function App() {
   }
 
   function AddNode() {
-    //bug: if you delete a node and add a new node, the new node will have the same id as an existing node
     const newNode = {
-      id: `n-${nodeCount + 1}`,
+      id: `${nodeCount + 1}`,
       label: `${nodeCount + 1}`,
     };
     setNodeCount(nodeCount + 1);
@@ -108,9 +91,19 @@ function App() {
   }
 
   function AddEdge(sourceId, targetId) {
+    if (
+      myEdges.find(
+        (edge) =>
+          (edge.source === sourceId && edge.target === targetId) ||
+          (edge.source === targetId && edge.target === sourceId)
+      )
+    ) {
+      alert("Edge already exists");
+      return;
+    }
     const random = Math.floor(Math.random() * 100);
     const newEdge = {
-      id: `E-${sourceId}->${targetId}`,
+      id: `${sourceId}->${targetId}`,
       source: sourceId,
       target: targetId,
       label: `${random}`,
@@ -161,7 +154,7 @@ function App() {
     setIsDirected(event.target.value);
   }
 
-  // Make a function to chnage the color of all the nodes in a given array of nodes ids
+  // Make a function to change the color of all the nodes in a given array of nodes ids
   function handleTraversalColorChange(nodeIds) {
     const newNodes = myNodes.map((node) => {
       if (nodeIds.includes(node.id)) {
@@ -221,7 +214,7 @@ function App() {
             type="radio"
             value="end"
             name="direction"
-            checked={isDirected === "end"}
+            defaultChecked={isDirected === "end"}
           />
 
           <label className="text-white" htmlFor="directed">
@@ -231,19 +224,19 @@ function App() {
             type="radio"
             value="none"
             name="direction"
-            checked={isDirected === "none"}
+            defaultChecked={isDirected === "none"}
           />
           <label className="text-white" htmlFor="undirected">
             Undirected
           </label>
         </div>
-        <Button1
+        {/* <Button1
           onClick={() => handleTraversalColorChange(["n-1", "n-2", "n-3"])}
         >
           Change Color of 3 nodes[n-1, n-2, n-3]
-        </Button1>
+        </Button1> */}
         <div
-          className="w-[75%] h-[75%] fixed top-1/2 left-1/2"
+          className="w-[75%] h-[60%] fixed top-1/2 left-1/2"
           style={{ transform: "translate(-50%, -50%)" }}
         >
           <GraphCanvas
