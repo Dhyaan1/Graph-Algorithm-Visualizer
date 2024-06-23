@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+/* eslint-disable react/prop-types */
+import { useEffect } from "react";
 import { useState } from "react";
 import Button1 from "./Buttons/Button1";
 
@@ -42,6 +43,7 @@ export default function AddEdges({
       source: sourceId,
       target: targetId,
       label: `${random}`,
+      size: 3,
     };
     setMyEdges([...myEdges, newEdge]);
     setSelections([]);

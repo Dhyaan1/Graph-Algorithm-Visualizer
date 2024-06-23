@@ -15,7 +15,6 @@ function App() {
   const [myEdges, setMyEdges] = useState(dummyedges);
   const [nodeCount, setNodeCount] = useState(myNodes.length);
   const [disableDeleteNode, setDisableDeleteNode] = useState(true);
-  const [disableDeleteEdge, setDisableDeleteEdge] = useState(true);
 
   const [adjacencyMatrix, setAdjacencyMatrix] = useState([]);
   function create2DArray(rows, cols) {
@@ -60,15 +59,10 @@ function App() {
   useEffect(() => {
     if (selections.length === 0) {
       setDisableDeleteNode(true);
-      setDisableDeleteEdge(true);
     }
     //only for single node selection
     if (selections.length === 1 && !selections[0].includes("->")) {
       setDisableDeleteNode(false);
-    }
-    //only for single edge selection
-    if (selections.length === 1 && selections[0].includes("->")) {
-      setDisableDeleteEdge(false);
     }
     //only for two node selection
   }, [selections]);
