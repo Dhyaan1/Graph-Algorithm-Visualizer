@@ -6,6 +6,7 @@ import Button1 from "./components/Buttons/Button1";
 import theme from "./assets/theme/theme";
 import AddNodes from "./components/AddNodes";
 import AddEdges from "./components/AddEdges";
+import DeleteEdges from "./components/DeleteEdges";
 
 function App() {
   const graphRef = useRef(null);
@@ -92,14 +93,6 @@ function App() {
     setDisableDeleteNode(true);
     setSelections([]);
   }
-
-  function DeleteEdge(EdgeId) {
-    const newEdges = myEdges.filter((edge) => edge.id !== EdgeId);
-    setMyEdges(newEdges);
-    setDisableDeleteEdge(true);
-    setSelections([]);
-  }
-
   function ChangeNodeColor(nodeId) {
     const newNodes = myNodes.map((node) => {
       if (node.id === nodeId) {
@@ -191,12 +184,12 @@ function App() {
         >
           Delete Node
         </Button1>
-        <Button1
-          disabled={disableDeleteEdge}
-          onClick={() => DeleteEdge(selections[0])}
-        >
-          Delete Edge
-        </Button1>
+        <DeleteEdges
+          myEdges={myEdges}
+          setMyEdges={setMyEdges}
+          selections={selections}
+          setSelections={setSelections}
+        />
         <div onChange={handleDirectedOrUnDirected}>
           <input
             type="radio"
