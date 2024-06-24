@@ -29,7 +29,7 @@ export default function FunctionalDisplayPanel({
 
   return (
     <>
-      <div className="flex flex-col w-[20svw] min-w-[20svw] h-full">
+      <div className="flex w-[20svw] min-w-[20svw] h-full">
         <Button1 onClick={ClearCanvas}>Clear Canvas</Button1>
         <Button1 onClick={() => console.log(myNodes)}>
           Console Log Nodes

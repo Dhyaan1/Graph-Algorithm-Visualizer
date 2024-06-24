@@ -1,12 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
-import { GraphCanvas, useSelection } from "reagraph";
+import { useSelection } from "reagraph";
 import { dummyedges, dummynodes } from "./assets/data/dummydata";
-import Button1 from "./components/Buttons/Button1";
 import theme from "./assets/theme/theme";
-import AddNodes from "./components/AddNodes";
-import AddEdges from "./components/AddEdges";
-import DeleteEdges from "./components/DeleteEdges";
 import GraphDisplayPanel from "./components/GraphDisplayPanel/GraphDisplayPanel";
 import FunctionalDisplayPanel from "./components/FunctionalDisplayPanel/FunctionalDisplayPanel";
 import OutputDisplayPanel from "./components/OutputDisplayPanel/OutputDisplayPanel";
@@ -103,12 +99,6 @@ function App() {
     setMyNode(newNodes);
   }
 
-  function ClearCanvas() {
-    setMyEdges([]);
-    setMyNode([]);
-    setNodeCount(0);
-  }
-
   function convertToAdjacencyGraph(edges) {
     const graph = {};
     edges.forEach((edge) => {
@@ -141,6 +131,23 @@ function App() {
   return (
     <>
       <div className="h-screen w-screen relative flex flex-col">
+        <FunctionalDisplayPanel
+          setMyEdges={setMyEdges}
+          setMyNode={setMyNode}
+          setNodeCount={setNodeCount}
+          myNodes={myNodes}
+          myEdges={myEdges}
+          selections={selections}
+          setSelections={setSelections}
+          nodeCount={nodeCount}
+          isDirected={isDirected}
+          handleDirectedOrUnDirected={handleDirectedOrUnDirected}
+          ChangeNodeColor={ChangeNodeColor}
+          createAdjacencyGraph={createAdjacencyGraph}
+          convertToAdjacencyGraph={convertToAdjacencyGraph}
+          DeleteNode={DeleteNode}
+          disableDeleteNode={disableDeleteNode}
+        />
         <div className="h-[80svh] min-h-[80svh] w-screen flex">
           <GraphDisplayPanel
             graphRef={graphRef}
@@ -156,23 +163,8 @@ function App() {
             onNodePointerOver={onNodePointerOver}
             onNodePointerOut={onNodePointerOut}
           />
-          <FunctionalDisplayPanel
-            setMyEdges={setMyEdges}
-            setMyNode={setMyNode}
-            setNodeCount={setNodeCount}
-            myNodes={myNodes}
-            myEdges={myEdges}
-            selections={selections}
-            setSelections={setSelections}
-            nodeCount={nodeCount}
-            isDirected={isDirected}
-            handleDirectedOrUnDirected={handleDirectedOrUnDirected}
-            ChangeNodeColor={ChangeNodeColor}
-            createAdjacencyGraph={createAdjacencyGraph}
-            convertToAdjacencyGraph={convertToAdjacencyGraph}
-            DeleteNode={DeleteNode}
-            disableDeleteNode={disableDeleteNode}
-          />
+          <OutputDisplayPanel />
+
           {/* <div className="flex flex-col">
             <Button1 onClick={ClearCanvas}>Clear Canvas</Button1>
             <Button1 onClick={() => console.log(myNodes)}>
@@ -246,7 +238,6 @@ function App() {
             Change Color of 3 nodes[n-1, n-2, n-3]
           </Button1> */}
         </div>
-        <OutputDisplayPanel />
       </div>
     </>
   );
