@@ -3,18 +3,33 @@ import { GraphCanvas } from "reagraph";
 
 export default function GraphDisplayPanel({
   graphRef,
+  toggleSelection,
+  onNodeClick,
   myNodes,
   myEdges,
   actives,
   theme,
   isDirected,
-  handleEdgeClick,
   selections,
   onCanvasClick,
-  handleNodeClick,
   onNodePointerOver,
   onNodePointerOut,
 }) {
+
+    function handleNodeClick(node) {
+    onNodeClick(node); // Dont really need this anymore
+    toggleSelection(node.id);
+    OnNodeClickNew(node);
+  }
+
+    function OnNodeClickNew(e) {
+    console.log("Node Clicked", e);
+  }
+
+    function handleEdgeClick(edge, e) {
+    console.log("Edge Clicked", edge, "\nEvent", e);
+    toggleSelection(edge.id);
+  }
   return (
     <>
       <div className="w-full h-full" style={{ transform: "translate(0%, 0%)" }}>
