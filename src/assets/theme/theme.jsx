@@ -39,8 +39,8 @@ const theme = {
     },
   },
   arrow: {
-    fill: "#E54F6D",
-    activeFill: "#F8C630",
+    fill: "#2b4570",
+    activeFill: "#E49273",
   },
   cluster: {
     stroke: "#D8E6EA",

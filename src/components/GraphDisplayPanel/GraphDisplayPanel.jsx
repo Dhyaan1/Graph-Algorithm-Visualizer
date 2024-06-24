@@ -17,10 +17,7 @@ export default function GraphDisplayPanel({
 }) {
   return (
     <>
-      <div
-        className="w-[75%] h-[60%] fixed top-1/2 left-1/2"
-        style={{ transform: "translate(-50%, -50%)" }}
-      >
+      <div className="w-full h-full" style={{ transform: "translate(0%, 0%)" }}>
         <GraphCanvas
           ref={graphRef}
           nodes={myNodes}
@@ -29,6 +26,7 @@ export default function GraphDisplayPanel({
           theme={theme}
           edgeLabelPosition="inline"
           labelType="all"
+          // layoutType="forceDirected3d"
           edgeArrowPosition={isDirected}
           onEdgeClick={handleEdgeClick}
           selections={selections}
