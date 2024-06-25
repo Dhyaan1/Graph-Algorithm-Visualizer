@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import "./App.css";
 import { useSelection } from "reagraph";
 import { dummyedges, dummynodes } from "./assets/data/dummydata";
@@ -6,8 +6,8 @@ import theme from "./assets/theme/theme";
 import GraphDisplayPanel from "./components/GraphDisplayPanel/GraphDisplayPanel";
 import FunctionalDisplayPanel from "./components/FunctionalDisplayPanel/FunctionalDisplayPanel";
 import OutputDisplayPanel from "./components/OutputDisplayPanel/OutputDisplayPanel";
-import Button1 from "./components/Buttons/Button1";
-import {createAdjacencyGraph} from "./functions/NodeFunctions";
+// import { AnimatePresence } from "framer-motion";
+// import AddEdgeModal from "./components/Modals/AddEdgeModal";
 
 function App() {
   const graphRef = useRef(null);
@@ -15,6 +15,15 @@ function App() {
   const [isDirected, setIsDirected] = useState("none");
   const [myEdges, setMyEdges] = useState(dummyedges);
   const [nodeCount, setNodeCount] = useState(myNodes.length);
+  const [outPut, setOutput] = useState("");
+  // const [showModal, setShowModal] = useState(false);
+
+  // const handleEdgeCostModal = () => {
+  //   setShowModal(true);
+  // };
+  // const handleModalClose = () => {
+  //   setShowModal(false);
+  // };
 
   const {
     selections,
@@ -49,9 +58,11 @@ function App() {
           nodeCount={nodeCount}
           isDirected={isDirected}
           setIsDirected={setIsDirected}
+          setOutput={setOutput}
         />
         <div className="h-[80svh] min-h-[80svh] w-screen flex">
           <GraphDisplayPanel
+            // handleEdgeCostModal={handleEdgeCostModal}
             graphRef={graphRef}
             onNodeClick={onNodeClick}
             toggleSelection={toggleSelection}
@@ -65,9 +76,20 @@ function App() {
             onNodePointerOver={onNodePointerOver}
             onNodePointerOut={onNodePointerOut}
           />
-          <OutputDisplayPanel />
+          <OutputDisplayPanel outPut={outPut} />
         </div>
       </div>
+      {/* <AnimatePresence>
+        {showModal && (
+          <AddEdgeModal
+            myEdges={myEdges}
+            setMyEdges={setMyEdges}
+            selections={selections}
+            setSelections={setSelections}
+            handleClose={() => handleModalClose()}
+          />
+        )}
+      </AnimatePresence> */}
     </>
   );
 }

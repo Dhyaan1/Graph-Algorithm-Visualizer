@@ -9,7 +9,7 @@ const theme = {
     label: {
       color: "#fff",
       stroke: "#201E1F",
-      activeColor: "#1DE9AC",
+      activeColor: "#FFF275",
     },
     subLabel: {
       color: "#ddd",
@@ -33,7 +33,7 @@ const theme = {
     inactiveOpacity: 0.1,
     label: {
       stroke: "#201E1F",
-      color: "#fff",
+      color: "#F2C14E",
       activeColor: "#1DE9AC",
       fontSize: 6,
     },

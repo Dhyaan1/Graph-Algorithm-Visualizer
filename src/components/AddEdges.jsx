@@ -2,6 +2,8 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import Button1 from "./Buttons/Button1";
+import { AnimatePresence } from "framer-motion";
+import AddEdgeModal from "./Modals/AddEdgeModal";
 
 export default function AddEdges({
   myEdges,
@@ -10,6 +12,14 @@ export default function AddEdges({
   setSelections,
 }) {
   const [disableAddEdge, setDisableAddEdge] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleEdgeCostModal = () => {
+    setShowModal(true);
+  };
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
   useEffect(() => {
     if (selections.length === 0) {
       setDisableAddEdge(true);
@@ -26,7 +36,7 @@ export default function AddEdges({
       setDisableAddEdge(true);
     }
   }, [selections]);
-  function AddEdge(sourceId, targetId) {
+  function AddEdge(sourceId, targetId, edgeCost) {
     if (
       myEdges.find(
         (edge) =>
@@ -35,26 +45,40 @@ export default function AddEdges({
       )
     ) {
       alert("Edge already exists");
+      setShowModal(false);
       return;
     }
-    const random = Math.floor(Math.random() * 100);
+    if (edgeCost === undefined) edgeCost = Math.floor(Math.random() * 100);
     const newEdge = {
       id: `${sourceId}->${targetId}`,
       source: sourceId,
       target: targetId,
-      label: `${random}`,
+      label: `${edgeCost}`,
       size: 3,
     };
     setMyEdges([...myEdges, newEdge]);
     setSelections([]);
     setDisableAddEdge(true);
+    setShowModal(false);
   }
   return (
-    <Button1
-      disabled={disableAddEdge}
-      onClick={() => AddEdge(selections[0], selections[1])}
-    >
-      Add Edge
-    </Button1>
+    <>
+      {!disableAddEdge && (
+        <Button1 onClick={handleEdgeCostModal}>Add Edge</Button1>
+      )}
+      <AnimatePresence>
+        {showModal && (
+          <AddEdgeModal
+            disableAddEdge={disableAddEdge}
+            AddEdge={AddEdge}
+            myEdges={myEdges}
+            setMyEdges={setMyEdges}
+            selections={selections}
+            setSelections={setSelections}
+            handleClose={() => handleModalClose()}
+          />
+        )}
+      </AnimatePresence>
+    </>
   );
 }

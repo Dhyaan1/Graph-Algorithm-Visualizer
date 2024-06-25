@@ -2,6 +2,7 @@
 import { GraphCanvas } from "reagraph";
 
 export default function GraphDisplayPanel({
+  handleEdgeCostModal,
   graphRef,
   toggleSelection,
   onNodeClick,
@@ -15,19 +16,19 @@ export default function GraphDisplayPanel({
   onNodePointerOver,
   onNodePointerOut,
 }) {
-
-    function handleNodeClick(node) {
+  function handleNodeClick(node) {
     onNodeClick(node); // Dont really need this anymore
     toggleSelection(node.id);
     OnNodeClickNew(node);
   }
 
-    function OnNodeClickNew(e) {
+  function OnNodeClickNew(e) {
     console.log("Node Clicked", e);
   }
 
-    function handleEdgeClick(edge, e) {
+  function handleEdgeClick(edge, e) {
     console.log("Edge Clicked", edge, "\nEvent", e);
+    handleEdgeCostModal();
     toggleSelection(edge.id);
   }
   return (

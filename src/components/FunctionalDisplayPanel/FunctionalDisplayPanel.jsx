@@ -6,10 +6,13 @@ import DeleteEdges from "../DeleteEdges";
 import DeleteNodes from "../DeleteNodes";
 import {
   createAdjacencyGraph,
-  DeleteNode,
-  bfsCall,
+  // DeleteNode,
+  // bfsCall,
 } from "../../functions/NodeFunctions";
 import { useEffect, useState } from "react";
+import DirectedOrUndirectedRadioButton from "../RadioButton/DirectedOrUndirectedRadioButton";
+// import { AnimatePresence } from "framer-motion";
+// import AddEdgeModal from "../Modals/AddEdgeModal";
 
 export default function FunctionalDisplayPanel({
   setMyEdges,
@@ -22,8 +25,17 @@ export default function FunctionalDisplayPanel({
   nodeCount,
   isDirected,
   setIsDirected,
+  setOutput,
 }) {
   const [adjacencyMatrix, setAdjacencyMatrix] = useState([]);
+  // const [showModal, setShowModal] = useState(false);
+
+  // const handleEdgeCostModal = () => {
+  //   setShowModal(true);
+  // };
+  // const handleModalClose = () => {
+  //   setShowModal(false);
+  // };
 
   function ClearCanvas() {
     setMyEdges([]);
@@ -149,84 +161,68 @@ export default function FunctionalDisplayPanel({
 
   useEffect(() => {
     createAdjacencyGraph(myEdges, nodeCount, isDirected, setAdjacencyMatrix);
-  }, [myEdges, myNodes.length, isDirected]);
-
-  function ChangeNodeColor(nodeId) {
-    const newNodes = myNodes.map((node) => {
-      if (node.id === nodeId) {
-        return {
-          ...node,
-          fill: "#F6F930",
-        };
-      }
-      return node;
-    });
-    setMyNode(newNodes);
-  }
+  }, [myEdges, myNodes.length, isDirected, nodeCount]);
 
   return (
     <>
-      <div className="flex w-[20svw] min-w-[20svw] h-full">
-        <DeleteNodes
-          selections={selections}
-          setSelections={setSelections}
-          myEdges={myEdges}
-          myNodes={myNodes}
-          setMyEdges={setMyEdges}
-          setMyNode={setMyNode}
-        />
-        <Button1 onClick={ClearCanvas}>Clear Canvas</Button1>
-        <Button1 onClick={() => console.log(myNodes)}>
-          Console Log Nodes
-        </Button1>
-        <AddNodes
-          nodeCount={nodeCount}
-          setNodeCount={setNodeCount}
-          myNodes={myNodes}
-          setMyNode={setMyNode}
-        />
-        <AddEdges
-          myEdges={myEdges}
-          setMyEdges={setMyEdges}
-          selections={selections}
-          setSelections={setSelections}
-        />
-        <Button1 onClick={() => ChangeNodeColor(selections[0])}>
-          Change Node Color
-        </Button1>
-        <Button1 onClick={() => console.log(selections)}>
-          Console Log Selections
-        </Button1>
-        <Button1 onClick={() => console.log(myEdges)}>
-          Console Log all Edges
-        </Button1>
-        <DeleteEdges
-          myEdges={myEdges}
-          setMyEdges={setMyEdges}
-          selections={selections}
-          setSelections={setSelections}
-        />
-        <div onChange={handleDirectedOrUnDirected}>
-          <input
-            type="radio"
-            value="end"
-            name="direction"
-            defaultChecked={isDirected === "end"}
+      <div className="flex flex-col w-full min-w-full h-full space-y-5">
+        <div className="flex">
+          <Button1 onClick={ClearCanvas}>Clear Canvas</Button1>
+          <DirectedOrUndirectedRadioButton
+            isDirected={isDirected}
+            handleDirectedOrUnDirected={handleDirectedOrUnDirected}
           />
-          <label className="text-white" htmlFor="directed">
-            Directed
-          </label>
-          <input
-            type="radio"
-            value="none"
-            name="direction"
-            defaultChecked={isDirected === "none"}
+          <Button1 onClick={() => console.log(myNodes)}>
+            Console Log Nodes
+          </Button1>
+          <Button1 onClick={() => console.log(selections)}>
+            Console Log Selections
+          </Button1>
+          <Button1 onClick={() => console.log(myEdges)}>
+            Console Log all Edges
+          </Button1>
+        </div>
+        <div>
+          <AddNodes
+            nodeCount={nodeCount}
+            setNodeCount={setNodeCount}
+            myNodes={myNodes}
+            setMyNode={setMyNode}
           />
-          <label className="text-white" htmlFor="undirected">
-            Undirected
-          </label>
+          <AddEdges
+            myEdges={myEdges}
+            setMyEdges={setMyEdges}
+            selections={selections}
+            setSelections={setSelections}
+          />
+          {/* <Button1 onClick={handleEdgeCostModal}>Show Modal</Button1> */}
+          <DeleteNodes
+            selections={selections}
+            setSelections={setSelections}
+            myEdges={myEdges}
+            myNodes={myNodes}
+            setMyEdges={setMyEdges}
+            setMyNode={setMyNode}
+          />
+          <DeleteEdges
+            myEdges={myEdges}
+            setMyEdges={setMyEdges}
+            selections={selections}
+            setSelections={setSelections}
+          />
         </div>
       </div>
+      {/* <AnimatePresence>
+        {showModal && (
+          <AddEdgeModal
+            myEdges={myEdges}
+            setMyEdges={setMyEdges}
+            selections={selections}
+            setSelections={setSelections}
+            handleClose={() => handleModalClose()}
+          />
+        )}
+      </AnimatePresence> */}
     </>
   );
 }

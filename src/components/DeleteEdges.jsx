@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from "react";
 import Button1 from "./Buttons/Button1";
 
 export default function DeleteEdges({
@@ -30,12 +30,14 @@ export default function DeleteEdges({
 
   return (
     <>
-      <Button1
-        disabled={disableDeleteEdge}
-        onClick={() => DeleteEdge(selections[0])}
-      >
-        Delete Edge
-      </Button1>
+      {!disableDeleteEdge && (
+        <Button1
+          disabled={disableDeleteEdge}
+          onClick={() => DeleteEdge(selections[0])}
+        >
+          Delete Edge
+        </Button1>
+      )}
     </>
   );
 }

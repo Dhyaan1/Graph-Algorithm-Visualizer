@@ -1,4 +1,4 @@
-import React from "react";
+/* eslint-disable react/prop-types */
 import { DeleteNode } from "../functions/NodeFunctions";
 import Button1 from "./Buttons/Button1";
 import { useState, useEffect } from "react";
@@ -27,22 +27,24 @@ export default function DeleteNodes({
   }, [selections]);
   return (
     <>
-      <Button1
-        disabled={disableDeleteNode}
-        onClick={() =>
-          DeleteNode(
-            selections[0],
-            myNodes,
-            myEdges,
-            setMyEdges,
-            setMyNode,
-            setDisableDeleteNode,
-            setSelections
-          )
-        }
-      >
-        Delete Node
-      </Button1>
+      {!disableDeleteNode && (
+        <Button1
+          disabled={disableDeleteNode}
+          onClick={() =>
+            DeleteNode(
+              selections[0],
+              myNodes,
+              myEdges,
+              setMyEdges,
+              setMyNode,
+              setDisableDeleteNode,
+              setSelections
+            )
+          }
+        >
+          Delete Node
+        </Button1>
+      )}
     </>
   );
 }
