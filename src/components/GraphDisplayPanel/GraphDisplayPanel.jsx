@@ -2,7 +2,6 @@
 import { GraphCanvas } from "reagraph";
 
 export default function GraphDisplayPanel({
-  handleEdgeCostModal,
   graphRef,
   toggleSelection,
   onNodeClick,
@@ -11,6 +10,7 @@ export default function GraphDisplayPanel({
   actives,
   theme,
   isDirected,
+  isWeighted,
   selections,
   onCanvasClick,
   onNodePointerOver,
@@ -28,7 +28,6 @@ export default function GraphDisplayPanel({
 
   function handleEdgeClick(edge, e) {
     console.log("Edge Clicked", edge, "\nEvent", e);
-    handleEdgeCostModal();
     toggleSelection(edge.id);
   }
   return (
@@ -41,7 +40,7 @@ export default function GraphDisplayPanel({
           actives={actives}
           theme={theme}
           edgeLabelPosition="inline"
-          labelType="all"
+          labelType={isWeighted ? "all" : "nodes"}
           // layoutType="forceDirected3d"
           edgeArrowPosition={isDirected}
           onEdgeClick={handleEdgeClick}
@@ -50,7 +49,9 @@ export default function GraphDisplayPanel({
           onNodeClick={handleNodeClick}
           onNodePointerOver={onNodePointerOver}
           onNodePointerOut={onNodePointerOut}
-        />
+        >
+          <directionalLight />
+        </GraphCanvas>
       </div>
     </>
   );

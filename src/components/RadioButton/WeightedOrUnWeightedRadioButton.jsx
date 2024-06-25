@@ -1,42 +1,45 @@
 /* eslint-disable react/prop-types */
-
-export default function DirectedOrUndirectedRadioButton({
-  isDirected,
-  setIsDirected,
+export default function WeightedOrUnWeightedRadioButton({
+  isWeighted,
+  setIsWeighted,
 }) {
-  function handleDirectedOrUnDirected(event) {
-    setIsDirected(event.target.value);
+  function handleWeightedOrUnWeighted(event) {
+    if (event.target.value === "Weighted") {
+      setIsWeighted(true);
+    } else {
+      setIsWeighted(false);
+    }
   }
 
   return (
     <>
       <div
-        onChange={handleDirectedOrUnDirected}
+        onChange={handleWeightedOrUnWeighted}
         className="flex space-x-2 border-[2px] border-[#FCF7FF] rounded-xl select-none m-4"
       >
         <label className="radio flex flex-grow items-center justify-center rounded-lg p-1 cursor-pointer">
           <input
             type="radio"
-            name="direction"
-            value="end"
+            name="Weighted"
+            value="Weighted"
             className="peer hidden"
-            defaultChecked={isDirected === "end"}
+            defaultChecked={isWeighted === true}
           />
           <span className="tracking-widest peer-checked:bg-gradient-to-r peer-checked:from-[#878C8F] peer-checked:to-[#C4CAD0] peer-checked:text-white text-gray-700 p-2 rounded-lg transition duration-150 ease-in-out">
-            Directed
+            Weighted
           </span>
         </label>
 
         <label className="radio flex flex-grow items-center justify-center rounded-lg p-1 cursor-pointer">
           <input
             type="radio"
-            value="none"
-            name="direction"
-            defaultChecked={isDirected === "none"}
+            value="Un-Weighted"
+            name="Weighted"
+            defaultChecked={isWeighted === false}
             className="peer hidden"
           />
           <span className="tracking-widest peer-checked:bg-gradient-to-r peer-checked:from-[#878C8F] peer-checked:to-[#C4CAD0] peer-checked:text-white text-gray-700 p-2 rounded-lg transition duration-150 ease-in-out">
-            Undirected
+            Un-Weighted
           </span>
         </label>
       </div>

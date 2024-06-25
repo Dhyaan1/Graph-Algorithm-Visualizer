@@ -13,6 +13,7 @@ function App() {
   const graphRef = useRef(null);
   const [myNodes, setMyNode] = useState(dummynodes);
   const [isDirected, setIsDirected] = useState("none");
+  const [isWeighted, setIsWeighted] = useState(false);
   const [myEdges, setMyEdges] = useState(dummyedges);
   const [nodeCount, setNodeCount] = useState(myNodes.length);
   const [outPut, setOutput] = useState("");
@@ -58,6 +59,8 @@ function App() {
           nodeCount={nodeCount}
           isDirected={isDirected}
           setIsDirected={setIsDirected}
+          isWeighted={isWeighted}
+          setIsWeighted={setIsWeighted}
           setOutput={setOutput}
         />
         <div className="h-[80svh] min-h-[80svh] w-screen flex">
@@ -71,6 +74,7 @@ function App() {
             actives={actives}
             theme={theme}
             isDirected={isDirected}
+            isWeighted={isWeighted}
             selections={selections}
             onCanvasClick={onCanvasClick}
             onNodePointerOver={onNodePointerOver}

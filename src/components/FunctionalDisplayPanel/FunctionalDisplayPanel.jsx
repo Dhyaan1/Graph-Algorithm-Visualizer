@@ -4,15 +4,10 @@ import AddNodes from "../AddNodes";
 import Button1 from "../Buttons/Button1";
 import DeleteEdges from "../DeleteEdges";
 import DeleteNodes from "../DeleteNodes";
-import {
-  createAdjacencyGraph,
-  // DeleteNode,
-  // bfsCall,
-} from "../../functions/NodeFunctions";
+import { createAdjacencyGraph } from "../../functions/NodeFunctions";
 import { useEffect, useState } from "react";
 import DirectedOrUndirectedRadioButton from "../RadioButton/DirectedOrUndirectedRadioButton";
-// import { AnimatePresence } from "framer-motion";
-// import AddEdgeModal from "../Modals/AddEdgeModal";
+import WeightedOrUnWeightedRadioButton from "../RadioButton/WeightedOrUnWeightedRadioButton";
 
 export default function FunctionalDisplayPanel({
   setMyEdges,
@@ -25,7 +20,8 @@ export default function FunctionalDisplayPanel({
   nodeCount,
   isDirected,
   setIsDirected,
-  setOutput,
+  isWeighted,
+  setIsWeighted,
 }) {
   const [adjacencyMatrix, setAdjacencyMatrix] = useState([]);
   // const [showModal, setShowModal] = useState(false);
@@ -42,9 +38,9 @@ export default function FunctionalDisplayPanel({
     setMyNode([]);
     setNodeCount(0);
   }
-  function handleDirectedOrUnDirected(event) {
-    setIsDirected(event.target.value);
-  }
+  // function handleDirectedOrUnDirected(event) {
+  //   setIsDirected(event.target.value);
+  // }
   //bfs call
   // useEffect(() => {
   //   if (adjacencyMatrix.length > 0) {
@@ -165,13 +161,9 @@ export default function FunctionalDisplayPanel({
 
   return (
     <>
-      <div className="flex flex-col w-full min-w-full h-full space-y-5">
-        <div className="flex">
+      <div className="flex flex-col w-full min-w-full h-full">
+        <div className="flex items-center justify-between">
           <Button1 onClick={ClearCanvas}>Clear Canvas</Button1>
-          <DirectedOrUndirectedRadioButton
-            isDirected={isDirected}
-            handleDirectedOrUnDirected={handleDirectedOrUnDirected}
-          />
           <Button1 onClick={() => console.log(myNodes)}>
             Console Log Nodes
           </Button1>
@@ -181,8 +173,17 @@ export default function FunctionalDisplayPanel({
           <Button1 onClick={() => console.log(myEdges)}>
             Console Log all Edges
           </Button1>
+          <DirectedOrUndirectedRadioButton
+            isDirected={isDirected}
+            setIsDirected={setIsDirected}
+          />
+          <WeightedOrUnWeightedRadioButton
+            isWeighted={isWeighted}
+            setIsWeighted={setIsWeighted}
+          />
         </div>
-        <div>
+
+        <div className="flex items-center justify-start">
           <AddNodes
             nodeCount={nodeCount}
             setNodeCount={setNodeCount}

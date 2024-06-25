@@ -48,7 +48,9 @@ export default function AddEdges({
       setShowModal(false);
       return;
     }
-    if (edgeCost === undefined) edgeCost = Math.floor(Math.random() * 100);
+    if (edgeCost === undefined || edgeCost === "") {
+      edgeCost = Math.floor(Math.random() * 100);
+    }
     const newEdge = {
       id: `${sourceId}->${targetId}`,
       source: sourceId,
