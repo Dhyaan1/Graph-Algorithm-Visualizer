@@ -16,15 +16,6 @@ function App() {
   const [isWeighted, setIsWeighted] = useState(false);
   const [myEdges, setMyEdges] = useState(dummyedges);
   const [nodeCount, setNodeCount] = useState(myNodes.length);
-  const [outPut, setOutput] = useState("");
-  // const [showModal, setShowModal] = useState(false);
-
-  // const handleEdgeCostModal = () => {
-  //   setShowModal(true);
-  // };
-  // const handleModalClose = () => {
-  //   setShowModal(false);
-  // };
 
   const {
     selections,
@@ -61,11 +52,9 @@ function App() {
           setIsDirected={setIsDirected}
           isWeighted={isWeighted}
           setIsWeighted={setIsWeighted}
-          setOutput={setOutput}
         />
         <div className="h-[80svh] min-h-[80svh] w-screen flex">
           <GraphDisplayPanel
-            // handleEdgeCostModal={handleEdgeCostModal}
             graphRef={graphRef}
             onNodeClick={onNodeClick}
             toggleSelection={toggleSelection}
@@ -80,20 +69,9 @@ function App() {
             onNodePointerOver={onNodePointerOver}
             onNodePointerOut={onNodePointerOut}
           />
-          <OutputDisplayPanel outPut={outPut} />
+          <OutputDisplayPanel />
         </div>
       </div>
-      {/* <AnimatePresence>
-        {showModal && (
-          <AddEdgeModal
-            myEdges={myEdges}
-            setMyEdges={setMyEdges}
-            selections={selections}
-            setSelections={setSelections}
-            handleClose={() => handleModalClose()}
-          />
-        )}
-      </AnimatePresence> */}
     </>
   );
 }

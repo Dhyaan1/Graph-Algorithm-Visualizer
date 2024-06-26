@@ -5,7 +5,6 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/graph-algorithm-visualizer",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
