@@ -49,6 +49,7 @@ export default function GraphDisplayPanel({
           onNodeClick={handleNodeClick}
           onNodePointerOver={onNodePointerOver}
           onNodePointerOut={onNodePointerOut}
+          disabled={false}
         >
           <directionalLight />
         </GraphCanvas>

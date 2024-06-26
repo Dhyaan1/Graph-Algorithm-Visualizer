@@ -6,6 +6,7 @@ import theme from "./assets/theme/theme";
 import GraphDisplayPanel from "./components/GraphDisplayPanel/GraphDisplayPanel";
 import FunctionalDisplayPanel from "./components/FunctionalDisplayPanel/FunctionalDisplayPanel";
 import OutputDisplayPanel from "./components/OutputDisplayPanel/OutputDisplayPanel";
+import { OutPutContextProvider } from "./components/context/OutPutContextProvider";
 // import { AnimatePresence } from "framer-motion";
 // import AddEdgeModal from "./components/Modals/AddEdgeModal";
 
@@ -20,7 +21,6 @@ function App() {
   const {
     selections,
     onNodeClick,
-    // addSelection,
     actives,
     setSelections,
     onNodePointerOver,
@@ -38,40 +38,42 @@ function App() {
 
   return (
     <>
-      <div className="h-screen w-screen relative flex flex-col">
-        <FunctionalDisplayPanel
-          setMyEdges={setMyEdges}
-          setMyNode={setMyNode}
-          setNodeCount={setNodeCount}
-          myNodes={myNodes}
-          myEdges={myEdges}
-          selections={selections}
-          setSelections={setSelections}
-          nodeCount={nodeCount}
-          isDirected={isDirected}
-          setIsDirected={setIsDirected}
-          isWeighted={isWeighted}
-          setIsWeighted={setIsWeighted}
-        />
-        <div className="h-[80svh] min-h-[80svh] w-screen flex">
-          <GraphDisplayPanel
-            graphRef={graphRef}
-            onNodeClick={onNodeClick}
-            toggleSelection={toggleSelection}
+      <OutPutContextProvider>
+        <div className="h-screen w-screen relative flex flex-col">
+          <FunctionalDisplayPanel
+            setMyEdges={setMyEdges}
+            setMyNode={setMyNode}
+            setNodeCount={setNodeCount}
             myNodes={myNodes}
             myEdges={myEdges}
-            actives={actives}
-            theme={theme}
-            isDirected={isDirected}
-            isWeighted={isWeighted}
             selections={selections}
-            onCanvasClick={onCanvasClick}
-            onNodePointerOver={onNodePointerOver}
-            onNodePointerOut={onNodePointerOut}
+            setSelections={setSelections}
+            nodeCount={nodeCount}
+            isDirected={isDirected}
+            setIsDirected={setIsDirected}
+            isWeighted={isWeighted}
+            setIsWeighted={setIsWeighted}
           />
-          <OutputDisplayPanel />
+          <div className="h-[80svh] min-h-[80svh] w-screen flex">
+            <GraphDisplayPanel
+              graphRef={graphRef}
+              onNodeClick={onNodeClick}
+              toggleSelection={toggleSelection}
+              myNodes={myNodes}
+              myEdges={myEdges}
+              actives={actives}
+              theme={theme}
+              isDirected={isDirected}
+              isWeighted={isWeighted}
+              selections={selections}
+              onCanvasClick={onCanvasClick}
+              onNodePointerOver={onNodePointerOver}
+              onNodePointerOut={onNodePointerOut}
+            />
+            <OutputDisplayPanel />
+          </div>
         </div>
-      </div>
+      </OutPutContextProvider>
     </>
   );
 }
