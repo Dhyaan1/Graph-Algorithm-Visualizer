@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 
 export default function OutputDisplayPanel() {
-  const { outPut, setOutPut } = useContext(OutPutContext);
+  const { outPut } = useContext(OutPutContext);
 
   const BfsTabContent = (
     <Card
@@ -78,7 +78,7 @@ export default function OutputDisplayPanel() {
 
   return (
     <>
-      <div className="h-full w-[20svw]">
+      <div className="h-full w-[20svw] min-w-[20svw] max-w-[20svw]">
         <Tabs defaultValue="BFS" className="text-white">
           <TabsList className="grid w-full grid-cols-3 text-white bg-[#878C8F]">
             <TabsTrigger value="BFS">BFS</TabsTrigger>

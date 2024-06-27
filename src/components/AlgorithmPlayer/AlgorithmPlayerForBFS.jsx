@@ -35,7 +35,6 @@ export default function AlgorithmPlayerForBFS({
   }
 
   const goForward = () => {
-    console.log("Going Forward");
     setCurrentStepIndex((prevIndex) => {
       const newIndex = Math.min(prevIndex + 1, steps.length - 1);
       // Check if we've reached the last step after updating
@@ -47,7 +46,6 @@ export default function AlgorithmPlayerForBFS({
   };
 
   const goBackward = () => {
-    console.log("Going Backward");
     setCurrentStepIndex((prevIndex) => Math.max(prevIndex - 1, 0));
   };
 
@@ -60,7 +58,7 @@ export default function AlgorithmPlayerForBFS({
       // Set up an interval that calls goForward every 1 second
       const id = setInterval(() => {
         goForward();
-      }, 500);
+      }, 1000);
       setIntervalId(id); // Store the interval ID
     } else {
       // Clear the interval if isPlaying is toggled to false

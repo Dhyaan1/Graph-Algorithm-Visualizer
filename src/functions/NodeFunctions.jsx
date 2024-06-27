@@ -30,7 +30,6 @@ function createAdjacencyGraph(
   });
   // Ensure a new array is created and set so that UseEffect is triggered
   setAdjacencyMatrix([...graph]);
-  console.log("Adjacency Matrix", graph);
 }
 
 function DeleteNode(
