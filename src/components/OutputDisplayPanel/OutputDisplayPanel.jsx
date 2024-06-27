@@ -23,9 +23,10 @@ export default function OutputDisplayPanel() {
           This is the output of the Breadth First Search algorithm
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="overflow-auto max-h-[50svh]">
         <p>
-          {outPut?.BFS ? JSON.stringify(outPut?.BFS) : "No output available"}
+          {/* {outPut?.BFS ? JSON.stringify(outPut?.BFS) : "No output available"} */}
+          {outPut ? JSON.stringify(outPut) : "No output available"}
         </p>
       </CardContent>
       <CardFooter>
@@ -42,9 +43,10 @@ export default function OutputDisplayPanel() {
           This is the output of the Depth First Search algorithm
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="overflow-auto max-h-[50svh]">
         <p>
-          {outPut?.DFS ? JSON.stringify(outPut?.DFS) : "No output available"}
+          {/* {outPut?.DFS ? JSON.stringify(outPut?.DFS) : "No output available"} */}
+          {outPut ? JSON.stringify(outPut) : "No output available"}
         </p>
       </CardContent>
       <CardFooter>
