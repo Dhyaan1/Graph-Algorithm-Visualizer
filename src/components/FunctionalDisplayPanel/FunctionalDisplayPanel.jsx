@@ -12,6 +12,7 @@ import WeightedOrUnWeightedRadioButton from "../RadioButton/WeightedOrUnWeighted
 import { OutPutContext } from "../context/OutPutContextProvider";
 import AlgorithmPlayerForBFS from "../AlgorithmPlayer/AlgorithmPlayerForBFS";
 import AlgorithmPlayerForDFS from "../AlgorithmPlayer/AlgorithmPlayerForDFS";
+import EnterTheSourceInputField from "../InputFields/EnterTheSourceInputField";
 
 export default function FunctionalDisplayPanel({
   setMyEdges,
@@ -31,7 +32,8 @@ export default function FunctionalDisplayPanel({
   const [currentAlgorithm, setCurrentAlgorithm] = useState("none");
   const [steps, setSteps] = useState([]);
   const [stepsForDFS, setStepsForDFS] = useState([]);
-  const { outPut, setOutPut } = useContext(OutPutContext);
+  const [sourceNode, setSourceNode] = useState(9);
+  const { setOutPut } = useContext(OutPutContext);
 
   function ClearCanvas() {
     setMyEdges([]);
@@ -39,15 +41,8 @@ export default function FunctionalDisplayPanel({
     setNodeCount(0);
   }
 
-  // function delay(ms) {
-  //   console.log(isPaused);
-  //   if (!isPaused) return new Promise((resolve) => setTimeout(resolve, ms));
-  //   else return new Promise((resolve) => setTimeout(resolve, 1000000000));
-  // }
-
   function colorFill(nodeId, color) {
     nodeId = nodeId.toString();
-    // console.log("colorFill", nodeId, color);
     setMyNode((currentNodes) => {
       const newNodes = currentNodes.map((node) => {
         if (node.id === nodeId) {
@@ -59,13 +54,6 @@ export default function FunctionalDisplayPanel({
         return node;
       });
       return newNodes;
-    });
-    // await delay(500);
-  }
-
-  function ColorArrayOfNodes(nodeArray, color) {
-    nodeArray.forEach((node) => {
-      colorFill(node, color);
     });
   }
 
@@ -129,8 +117,7 @@ export default function FunctionalDisplayPanel({
 
     // Once all BFS calls are done, update the steps state with the accumulated steps
     setSteps(stepsAccumulator);
-    console.log("Steps After BFS", steps);
-    console.log("Steps Accumulator", stepsAccumulator);
+    console.log("Steps of BFS", stepsAccumulator);
     setOutPut(stepsAccumulator);
 
     return allTraversals;
@@ -144,51 +131,98 @@ export default function FunctionalDisplayPanel({
     arr.forEach((traversal) => {
       console.log("BFS", traversal);
     });
-    // await delay(15000);
-    // SetToDefaultColor();
   }
 
-  function DFS(graph, start, visited, arr, stepsAccumulator) {
+  function DFS(
+    graph,
+    start,
+    visited,
+    arr,
+    visitedNodes = [],
+    backtrackingNodes = [],
+    stepsAccumulator = [] // Add stepsAccumulator to the parameters list
+  ) {
     if (start < 0 || start >= graph.length) {
       return;
     }
     visited[start] = true;
     arr.push(start);
-    const neighbors = graph[start];
+    visitedNodes.push(start); // Update visitedNodes with the current node
 
-    // Append the current state to the steps accumulator
+    // Push the current state into stepsAccumulator instead of logging it
     stepsAccumulator.push({
       currentNode: start,
-      visitedNodes: visited.map((v, i) => (v ? i : -1)).filter((i) => i !== -1), // Get indexes of visited nodes
+      visitedNodes: [...visitedNodes], // Clone to snapshot the current state
+      backtrackingNodes: [...backtrackingNodes], // Clone to maintain previous state
     });
 
+    const neighbors = graph[start];
     for (const [index, node] of neighbors.entries()) {
       if (node && !visited[index]) {
-        DFS(graph, index, visited, arr, stepsAccumulator);
+        DFS(
+          graph,
+          parseInt(index, 10),
+          visited,
+          arr,
+          visitedNodes,
+          backtrackingNodes,
+          stepsAccumulator
+        );
       }
     }
+
+    backtrackingNodes.push(start); // Update backtrackingNodes after visiting neighbors
+
+    // Push the state after backtracking into stepsAccumulator
+    stepsAccumulator.push({
+      currentNode: start,
+      visitedNodes: [...visitedNodes], // Clone to maintain previous state
+      backtrackingNodes: [...backtrackingNodes], // Clone to snapshot the current state
+    });
   }
 
   function DFSForDisconnectedComponents(graph) {
     const visited = new Array(graph.length).fill(false);
     const allTraversals = [];
-    const stepsAccumulator = []; // Accumulator for all steps across DFS calls
+    const stepsAccumulator = []; // Initialize stepsAccumulator
+
+    // Initialize visitedNodes and backtrackingNodes outside the loop
+    // to maintain their state across disconnected components
+    const visitedNodes = [];
+    const backtrackingNodes = [];
 
     let temp = [];
-    DFS(graph, 5, visited, temp, stepsAccumulator);
+    DFS(
+      graph,
+      parseInt(sourceNode, 10),
+      visited,
+      temp,
+      visitedNodes,
+      backtrackingNodes,
+      stepsAccumulator
+    );
     allTraversals.push(temp);
 
+    // Iterate through all nodes to handle disconnected components
     for (const node of myNodes) {
       if (!visited[node.id]) {
         let temp = [];
-        DFS(graph, node.id, visited, temp, stepsAccumulator);
+        DFS(
+          graph,
+          parseInt(node.id, 10),
+          visited,
+          temp,
+          visitedNodes, // Pass the maintained visitedNodes
+          backtrackingNodes, // Pass the maintained backtrackingNodes
+          stepsAccumulator
+        );
         allTraversals.push(temp);
       }
     }
 
     // Once all DFS calls are done, update the steps state with the accumulated steps
-    console.log("Steps Accumulator", stepsAccumulator);
     setStepsForDFS(stepsAccumulator);
+    console.log("Steps of DFS", stepsAccumulator);
     setOutPut(stepsAccumulator);
 
     return allTraversals;
@@ -243,14 +277,14 @@ export default function FunctionalDisplayPanel({
     setStepsForDFS([]);
     setCurrentAlgorithm("none");
     SetToDefaultColor();
-  }, [myEdges, myNodes.length, isDirected, nodeCount]);
+  }, [myEdges, myNodes.length, isDirected, nodeCount, sourceNode]);
 
   return (
     <>
       <div className="flex flex-col w-full min-w-full h-full">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-10">
           <Button1 onClick={ClearCanvas}>Clear Canvas</Button1>
-          <Button1 onClick={() => console.log(myNodes)}>
+          {/* <Button1 onClick={() => console.log(myNodes)}>
             Console Log Nodes
           </Button1>
           <Button1 onClick={() => console.log(selections)}>
@@ -258,7 +292,7 @@ export default function FunctionalDisplayPanel({
           </Button1>
           <Button1 onClick={() => console.log(myEdges)}>
             Console Log all Edges
-          </Button1>
+          </Button1> */}
           <DirectedOrUndirectedRadioButton
             isDirected={isDirected}
             setIsDirected={setIsDirected}
@@ -267,51 +301,59 @@ export default function FunctionalDisplayPanel({
             isWeighted={isWeighted}
             setIsWeighted={setIsWeighted}
           />
+          <EnterTheSourceInputField
+            sourceNode={sourceNode}
+            setSourceNode={setSourceNode}
+          />
         </div>
 
-        <div className="flex items-center justify-start">
-          <AddNodes
-            nodeCount={nodeCount}
-            setNodeCount={setNodeCount}
-            myNodes={myNodes}
-            setMyNode={setMyNode}
-          />
-          <Button1 onClick={bfsCall}>BFS</Button1>
-          <Button1 onClick={dfsCall}>DFS</Button1>
-          {currentAlgorithm === "BFS" && (
-            <AlgorithmPlayerForBFS
-              currentAlgorithm={currentAlgorithm}
-              steps={steps}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center justify-start w-[70%] min-w-[70%] max-w-[70%] border-r-2 border-[#878C8F]">
+            <Button1 onClick={bfsCall}>BFS</Button1>
+            <Button1 onClick={dfsCall}>DFS</Button1>
+            {currentAlgorithm === "BFS" && (
+              <AlgorithmPlayerForBFS
+                currentAlgorithm={currentAlgorithm}
+                steps={steps}
+                setMyNode={setMyNode}
+              />
+            )}
+            {currentAlgorithm === "DFS" && (
+              <AlgorithmPlayerForDFS
+                currentAlgorithm={currentAlgorithm}
+                steps={stepsForDFS}
+                setMyNode={setMyNode}
+              />
+            )}
+          </div>
+          <div className="flex items-center justify-start w-[30%] min-w-[30%] max-w-[30%]">
+            <AddNodes
+              nodeCount={nodeCount}
+              setNodeCount={setNodeCount}
+              myNodes={myNodes}
               setMyNode={setMyNode}
             />
-          )}
-          {currentAlgorithm === "DFS" && (
-            <AlgorithmPlayerForDFS
-              currentAlgorithm={currentAlgorithm}
-              steps={stepsForDFS}
+            <AddEdges
+              myEdges={myEdges}
+              setMyEdges={setMyEdges}
+              selections={selections}
+              setSelections={setSelections}
+            />
+            <DeleteNodes
+              selections={selections}
+              setSelections={setSelections}
+              myEdges={myEdges}
+              myNodes={myNodes}
+              setMyEdges={setMyEdges}
               setMyNode={setMyNode}
             />
-          )}
-          <AddEdges
-            myEdges={myEdges}
-            setMyEdges={setMyEdges}
-            selections={selections}
-            setSelections={setSelections}
-          />
-          <DeleteNodes
-            selections={selections}
-            setSelections={setSelections}
-            myEdges={myEdges}
-            myNodes={myNodes}
-            setMyEdges={setMyEdges}
-            setMyNode={setMyNode}
-          />
-          <DeleteEdges
-            myEdges={myEdges}
-            setMyEdges={setMyEdges}
-            selections={selections}
-            setSelections={setSelections}
-          />
+            <DeleteEdges
+              myEdges={myEdges}
+              setMyEdges={setMyEdges}
+              selections={selections}
+              setSelections={setSelections}
+            />
+          </div>
         </div>
       </div>
     </>
