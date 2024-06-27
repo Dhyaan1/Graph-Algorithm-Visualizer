@@ -11,15 +11,15 @@ export default function AlgorithmPlayerForDFS({
   const [isPlaying, setIsPlaying] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
 
-  function colorNodes(queuedNodes, visitedNodes, currentNodeId) {
+  function colorNodes(backtrackingNodes, visitedNodes, currentNodeId) {
     setMyNode((currentNodes) => {
       const newNodes = currentNodes.map((node) => {
         let color;
         const nodeIdAsNumber = parseInt(node.id, 10); // Convert node.id to a number
-        if (nodeIdAsNumber === currentNodeId) {
+        if (backtrackingNodes?.includes(nodeIdAsNumber)) {
+          color = "blue"; // Color for backtracking nodes
+        } else if (nodeIdAsNumber === currentNodeId) {
           color = "#1C7C54"; // Color for the current node
-        } else if (queuedNodes?.includes(nodeIdAsNumber)) {
-          color = "white"; // Color for queued nodes;
         } else if (visitedNodes.includes(nodeIdAsNumber)) {
           color = "red"; // Color for visited nodes
         } else {
@@ -35,7 +35,6 @@ export default function AlgorithmPlayerForDFS({
   }
 
   const goForward = () => {
-    console.log("Going Forward");
     setCurrentStepIndex((prevIndex) => {
       const newIndex = Math.min(prevIndex + 1, steps.length - 1);
       // Check if we've reached the last step after updating
@@ -47,7 +46,6 @@ export default function AlgorithmPlayerForDFS({
   };
 
   const goBackward = () => {
-    console.log("Going Backward");
     setCurrentStepIndex((prevIndex) => Math.max(prevIndex - 1, 0));
   };
 
@@ -60,7 +58,7 @@ export default function AlgorithmPlayerForDFS({
       // Set up an interval that calls goForward every 1 second
       const id = setInterval(() => {
         goForward();
-      }, 500);
+      }, 1000);
       setIntervalId(id); // Store the interval ID
     } else {
       // Clear the interval if isPlaying is toggled to false
@@ -84,7 +82,7 @@ export default function AlgorithmPlayerForDFS({
         const currentStep = steps[currentStepIndex];
         // Assuming colorNodes function is defined and available in this scope
         colorNodes(
-          currentStep?.queuedNodes,
+          currentStep?.backtrackingNodes,
           currentStep.visitedNodes,
           currentStep.currentNode
         );
@@ -98,7 +96,6 @@ export default function AlgorithmPlayerForDFS({
 
   useEffect(() => {
     // Reset the current step index when the steps array changes (e.g., when the algorithm is restarted)
-    console.log("Steps changed");
     setCurrentStepIndex(0);
   }, [steps]);
 
