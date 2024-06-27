@@ -10,6 +10,8 @@ import { useContext, useEffect, useState } from "react";
 import DirectedOrUndirectedRadioButton from "../RadioButton/DirectedOrUndirectedRadioButton";
 import WeightedOrUnWeightedRadioButton from "../RadioButton/WeightedOrUnWeightedRadioButton";
 import { OutPutContext } from "../context/OutPutContextProvider";
+import AlgorithmPlayerForBFS from "../AlgorithmPlayer/AlgorithmPlayerForBFS";
+import AlgorithmPlayerForDFS from "../AlgorithmPlayer/AlgorithmPlayerForDFS";
 
 export default function FunctionalDisplayPanel({
   setMyEdges,
@@ -26,8 +28,9 @@ export default function FunctionalDisplayPanel({
   setIsWeighted,
 }) {
   const [adjacencyMatrix, setAdjacencyMatrix] = useState([]);
-  const [isPaused, setIsPaused] = useState(false);
+  const [currentAlgorithm, setCurrentAlgorithm] = useState("none");
   const [steps, setSteps] = useState([]);
+  const [stepsForDFS, setStepsForDFS] = useState([]);
   const { outPut, setOutPut } = useContext(OutPutContext);
 
   function ClearCanvas() {
@@ -36,15 +39,15 @@ export default function FunctionalDisplayPanel({
     setNodeCount(0);
   }
 
-  function delay(ms) {
-    console.log(isPaused);
-    if (!isPaused) return new Promise((resolve) => setTimeout(resolve, ms));
-    else return new Promise((resolve) => setTimeout(resolve, 1000000000));
-  }
+  // function delay(ms) {
+  //   console.log(isPaused);
+  //   if (!isPaused) return new Promise((resolve) => setTimeout(resolve, ms));
+  //   else return new Promise((resolve) => setTimeout(resolve, 1000000000));
+  // }
 
-  async function colorFill(nodeId, color) {
+  function colorFill(nodeId, color) {
     nodeId = nodeId.toString();
-    console.log("colorFill", nodeId, color);
+    // console.log("colorFill", nodeId, color);
     setMyNode((currentNodes) => {
       const newNodes = currentNodes.map((node) => {
         if (node.id === nodeId) {
@@ -57,7 +60,7 @@ export default function FunctionalDisplayPanel({
       });
       return newNodes;
     });
-    await delay(2000);
+    // await delay(500);
   }
 
   function ColorArrayOfNodes(nodeArray, color) {
@@ -72,53 +75,80 @@ export default function FunctionalDisplayPanel({
     });
   }
 
-  function Pause() {
-    setIsPaused((prev) => !prev);
-  }
+  // function Pause() {
+  //   setIsPaused((prev) => !prev);
+  // }
 
-  async function BFS(graph, start, visited) {
+  async function BFS(graph, start, visited, stepsAccumulator) {
     const queue = [];
     const traversal = [];
+
     queue.push(start);
     visited[start] = true;
+
     while (queue.length > 0) {
       const node = queue.shift();
       traversal.push(node);
-      ColorArrayOfNodes(queue, "white"); // discovered for visualization
-      await colorFill(node, "red"); // done for visualization
-      for (let i = 1; i <= nodeCount; i++) {
+
+      // Append the current state to the steps accumulator
+      stepsAccumulator.push({
+        currentNode: node,
+        visitedNodes: Object.keys(visited)
+          .filter((key) => visited[key])
+          .map(Number), // Convert keys to numbers for visited nodes
+        queuedNodes: [...queue], // Copy the current queue state
+      });
+
+      for (let i = 1; i <= graph.length; i++) {
         if (graph[node][i] && !visited[i]) {
           queue.push(i);
           visited[i] = true;
         }
       }
     }
+
     return traversal;
   }
-  async function bfsForDisconnectedComponents(graph) {
+
+  function bfsForDisconnectedComponents(graph) {
     const visited = new Array(nodeCount + 1).fill(false);
     const allTraversals = [];
+    const stepsAccumulator = []; // Accumulator for all steps across BFS calls
 
     for (const node of myNodes) {
       if (!visited[node.id]) {
-        const temp = await BFS(graph, node.id, visited);
+        const temp = BFS(
+          graph,
+          parseInt(node.id, 10),
+          visited,
+          stepsAccumulator
+        );
         allTraversals.push(temp);
       }
     }
+
+    // Once all BFS calls are done, update the steps state with the accumulated steps
+    setSteps(stepsAccumulator);
+    console.log("Steps After BFS", steps);
+    console.log("Steps Accumulator", stepsAccumulator);
+    setOutPut(stepsAccumulator);
+
     return allTraversals;
   }
-  async function bfsCall() {
-    SetToDefaultColor();
-    const arr = await bfsForDisconnectedComponents(adjacencyMatrix);
+
+  function bfsCall() {
+    setCurrentAlgorithm("BFS");
+    console.log("Steps before BFS", steps);
+    const arr = bfsForDisconnectedComponents(adjacencyMatrix);
     console.log("BFS");
     arr.forEach((traversal) => {
       console.log("BFS", traversal);
     });
-    await delay(15000);
-    SetToDefaultColor();
+    // await delay(15000);
+    // SetToDefaultColor();
   }
 
-  async function DFS(graph, start, visited, arr) {
+  function DFS(graph, start, visited, arr, stepsAccumulator) {
     if (start < 0 || start >= graph.length) {
       return;
     }
@@ -126,38 +156,47 @@ export default function FunctionalDisplayPanel({
     arr.push(start);
     const neighbors = graph[start];
 
-    await colorFill(start, "red");
+    // Append the current state to the steps accumulator
+    stepsAccumulator.push({
+      currentNode: start,
+      visitedNodes: visited.map((v, i) => (v ? i : -1)).filter((i) => i !== -1), // Get indexes of visited nodes
+    });
 
-    console.log("hello", start);
     for (const [index, node] of neighbors.entries()) {
       if (node && !visited[index]) {
-        await DFS(graph, index, visited, arr);
+        DFS(graph, index, visited, arr, stepsAccumulator);
       }
     }
-    await colorFill(start, "blue");
   }
 
-  async function DFSForDisconnectedComponents(graph) {
+  function DFSForDisconnectedComponents(graph) {
     const visited = new Array(graph.length).fill(false);
     const allTraversals = [];
+    const stepsAccumulator = []; // Accumulator for all steps across DFS calls
 
     let temp = [];
-    await DFS(graph, 5, visited, temp);
+    DFS(graph, 5, visited, temp, stepsAccumulator);
     allTraversals.push(temp);
 
     for (const node of myNodes) {
       if (!visited[node.id]) {
         let temp = [];
-        await DFS(graph, node.id, visited, temp);
+        DFS(graph, node.id, visited, temp, stepsAccumulator);
         allTraversals.push(temp);
       }
     }
 
+    // Once all DFS calls are done, update the steps state with the accumulated steps
+    console.log("Steps Accumulator", stepsAccumulator);
+    setStepsForDFS(stepsAccumulator);
+    setOutPut(stepsAccumulator);
+
     return allTraversals;
   }
 
-  async function dfsCall() {
-    const arr = await DFSForDisconnectedComponents(adjacencyMatrix);
+  function dfsCall() {
+    setCurrentAlgorithm("DFS");
+    const arr = DFSForDisconnectedComponents(adjacencyMatrix);
     console.log("DFS");
     arr.forEach((traversal) => {
       console.log("Traversal", traversal);
@@ -199,6 +238,13 @@ export default function FunctionalDisplayPanel({
     createAdjacencyGraph(myEdges, nodeCount, isDirected, setAdjacencyMatrix);
   }, [myEdges, myNodes.length, isDirected, nodeCount]);
 
+  useEffect(() => {
+    setSteps([]);
+    setStepsForDFS([]);
+    setCurrentAlgorithm("none");
+    SetToDefaultColor();
+  }, [myEdges, myNodes.length, isDirected, nodeCount]);
+
   return (
     <>
       <div className="flex flex-col w-full min-w-full h-full">
@@ -224,22 +270,34 @@ export default function FunctionalDisplayPanel({
         </div>
 
         <div className="flex items-center justify-start">
-          <Button1 onClick={bfsCall}>BFS</Button1>
-          <Button1 onClick={dfsCall}>DFS</Button1>
-          <Button1 onClick={Pause}>Pause</Button1>
           <AddNodes
             nodeCount={nodeCount}
             setNodeCount={setNodeCount}
             myNodes={myNodes}
             setMyNode={setMyNode}
           />
+          <Button1 onClick={bfsCall}>BFS</Button1>
+          <Button1 onClick={dfsCall}>DFS</Button1>
+          {currentAlgorithm === "BFS" && (
+            <AlgorithmPlayerForBFS
+              currentAlgorithm={currentAlgorithm}
+              steps={steps}
+              setMyNode={setMyNode}
+            />
+          )}
+          {currentAlgorithm === "DFS" && (
+            <AlgorithmPlayerForDFS
+              currentAlgorithm={currentAlgorithm}
+              steps={stepsForDFS}
+              setMyNode={setMyNode}
+            />
+          )}
           <AddEdges
             myEdges={myEdges}
             setMyEdges={setMyEdges}
             selections={selections}
             setSelections={setSelections}
           />
-          {/* <Button1 onClick={handleEdgeCostModal}>Show Modal</Button1> */}
           <DeleteNodes
             selections={selections}
             setSelections={setSelections}
@@ -256,17 +314,6 @@ export default function FunctionalDisplayPanel({
           />
         </div>
       </div>
-      {/* <AnimatePresence>
-        {showModal && (
-          <AddEdgeModal
-            myEdges={myEdges}
-            setMyEdges={setMyEdges}
-            selections={selections}
-            setSelections={setSelections}
-            handleClose={() => handleModalClose()}
-          />
-        )}
-      </AnimatePresence> */}
     </>
   );
 }
