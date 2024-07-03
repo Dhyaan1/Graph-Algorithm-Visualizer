@@ -13,6 +13,7 @@ import { OutPutContext } from "../context/OutPutContextProvider";
 import AlgorithmPlayerForBFS from "../AlgorithmPlayer/AlgorithmPlayerForBFS";
 import AlgorithmPlayerForDFS from "../AlgorithmPlayer/AlgorithmPlayerForDFS";
 import EnterTheSourceInputField from "../InputFields/EnterTheSourceInputField";
+import AlgorithmPlayerForDijkstra from "../AlgorithmPlayer/AlgorithmPlayerForDijkstra";
 
 export default function FunctionalDisplayPanel({
   setMyEdges,
@@ -32,6 +33,7 @@ export default function FunctionalDisplayPanel({
   const [currentAlgorithm, setCurrentAlgorithm] = useState("none");
   const [steps, setSteps] = useState([]);
   const [stepsForDFS, setStepsForDFS] = useState([]);
+  const [stepsForDijstras, setStepsForDijstras] = useState([]);
   const [sourceNode, setSourceNode] = useState(9);
   const { setOutPut } = useContext(OutPutContext);
 
@@ -67,7 +69,7 @@ export default function FunctionalDisplayPanel({
   //   setIsPaused((prev) => !prev);
   // }
 
-  async function BFS(graph, start, visited, stepsAccumulator) {
+  function BFS(graph, start, visited, stepsAccumulator) {
     const queue = [];
     const traversal = [];
 
@@ -253,20 +255,61 @@ export default function FunctionalDisplayPanel({
   //     visited[min] = true;
   //     for (let j = 1; j <= nodeCount; j++) {
   //       if (graph[min][j] && distance[j] > distance[min] + graph[min][j]) {
-  //         distance[j] =parseInt(distance[min]) + parseInt(graph[min][j]);
+  //         distance[j] = parseInt(distance[min]) + parseInt(graph[min][j]);
   //       }
   //     }
   //   }
+  //   console.log(distance);
   //   return distance;
   // }
+
+  function dijkstrasAlgorithm(graph, startNode) {
+    setCurrentAlgorithm("dijkstras");
+    const distances = Array(graph.length).fill(Infinity);
+    distances[startNode] = 0;
+    const visited = {};
+    const priorityQueue = [{ node: startNode, distance: 0 }];
+    const stepsAccumulator = []; // Use this to accumulate steps locally first
+    const visitedNodes = []; // Track visited nodes
+
+    while (priorityQueue.length > 0) {
+      priorityQueue.sort((a, b) => a.distance - b.distance);
+      const { node: currentNode } = priorityQueue.shift();
+      if (visited[currentNode]) continue;
+      visited[currentNode] = true;
+      visitedNodes.push(currentNode); // Add to visited nodes
+
+      const neighbors = graph[currentNode];
+      for (const [neighbor, distance] of neighbors.entries()) {
+        if (distance !== 0) {
+          const newDistance = distances[currentNode] + distance;
+          if (newDistance < distances[neighbor]) {
+            distances[neighbor] = newDistance;
+            priorityQueue.push({ node: neighbor, distance: newDistance });
+            stepsAccumulator.push({
+              currentNode,
+              visitedNodes: [...visitedNodes], // Copy of visitedNodes at this point
+            });
+          }
+        }
+      }
+    }
+
+    // Update stepsForDijstras state variable directly at the end
+    setStepsForDijstras(stepsAccumulator);
+    setOutPut(stepsAccumulator);
+    console.log("Steps of Dijstras", stepsAccumulator);
+  }
+
+  // Example usage within a React component:
+  // dijkstrasAlgorithm(graph, 0, setStepsForDijstras);
 
   // useEffect(() => {
   //   if (adjacencyMatrix.length > 0) {
   //     const distance = dijstrasAlgorithm(adjacencyMatrix, 1);
   //     console.log("Dijstras", distance);
   //   }
-  // }
-  // , [adjacencyMatrix]);
+  // }, [adjacencyMatrix]);
 
   useEffect(() => {
     createAdjacencyGraph(myEdges, nodeCount, isDirected, setAdjacencyMatrix);
@@ -311,6 +354,9 @@ export default function FunctionalDisplayPanel({
           <div className="flex items-center justify-start w-[70%] min-w-[70%] max-w-[70%] border-r-2 border-[#878C8F]">
             <Button1 onClick={bfsCall}>BFS</Button1>
             <Button1 onClick={dfsCall}>DFS</Button1>
+            <Button1 onClick={() => dijkstrasAlgorithm(adjacencyMatrix, 1)}>
+              Dijstras
+            </Button1>
             {currentAlgorithm === "BFS" && (
               <AlgorithmPlayerForBFS
                 currentAlgorithm={currentAlgorithm}
@@ -322,6 +368,13 @@ export default function FunctionalDisplayPanel({
               <AlgorithmPlayerForDFS
                 currentAlgorithm={currentAlgorithm}
                 steps={stepsForDFS}
+                setMyNode={setMyNode}
+              />
+            )}
+            {currentAlgorithm === "dijkstras" && (
+              <AlgorithmPlayerForDijkstra
+                currentAlgorithm={currentAlgorithm}
+                steps={stepsForDijstras}
                 setMyNode={setMyNode}
               />
             )}
