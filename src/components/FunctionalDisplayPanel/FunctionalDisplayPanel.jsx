@@ -282,7 +282,8 @@ export default function FunctionalDisplayPanel({
       const neighbors = graph[currentNode];
       for (const [neighbor, distance] of neighbors.entries()) {
         if (distance !== 0) {
-          const newDistance = distances[currentNode] + distance;
+          // Ensure distance is treated as a number
+          const newDistance = distances[currentNode] + Number(distance);
           if (newDistance < distances[neighbor]) {
             distances[neighbor] = newDistance;
             priorityQueue.push({ node: neighbor, distance: newDistance });
@@ -299,6 +300,8 @@ export default function FunctionalDisplayPanel({
     setStepsForDijstras(stepsAccumulator);
     setOutPut(stepsAccumulator);
     console.log("Steps of Dijstras", stepsAccumulator);
+    console.log("Dijstras distances", distances);
+    return distances;
   }
 
   // Example usage within a React component:
