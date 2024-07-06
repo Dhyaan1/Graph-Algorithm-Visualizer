@@ -57,9 +57,8 @@ class PriorityQueue {
   }
 
   printPQueue() {
-    let str = "";
-    for (let i = 0; i < this.items.length; i++)
-      str += this.items[i].element + " ";
+    let str = [];
+    for (let i = 0; i < this.items.length; i++) str.push(this.items[i].element);
     return str;
   }
   pop() {
@@ -200,6 +199,7 @@ export default function FunctionalDisplayPanel({
   }
 
   function bfsCall() {
+    setIsWeighted(false);
     setCurrentAlgorithm("BFS");
     console.log("Steps before BFS", steps);
     const arr = bfsForDisconnectedComponents(adjacencyMatrix);
@@ -305,6 +305,7 @@ export default function FunctionalDisplayPanel({
   }
 
   function dfsCall() {
+    setIsWeighted(false);
     setCurrentAlgorithm("DFS");
     const arr = DFSForDisconnectedComponents(adjacencyMatrix);
     console.log("DFS");
@@ -314,31 +315,34 @@ export default function FunctionalDisplayPanel({
   }
 
   //this is dijstras algorithm shit don't touch.
-  function delay(milliseconds) {
-    return new Promise((resolve) => setTimeout(resolve, milliseconds));
-  }
-
-  async function dijstrasAlgorithm() {
+  function dijstrasAlgorithm() {
+    setIsWeighted(true);
+    setCurrentAlgorithm("dijkstra's");
     const graph = adjacencyMatrix;
     const source = 1;
     const dest = 9;
-    colorFill(source, "blue");
-    colorFill(dest, "blue");
+    const stepsAccumulator = [];
 
     let pq = new PriorityQueue();
     let dist = new Array(nodeCount + 1).fill(Infinity);
     let previous = new Array(nodeCount + 1).fill(null); // Array to store previous nodes
     pq.push(source, 0);
     dist[source] = 0;
+    const visitedNodes = [];
 
     while (!pq.isEmpty()) {
-      let curr = pq.top().element;
+      let curr = pq.top().element; // Node that is picked
       let val = pq.top().priority;
-      colorFill(curr, "red");
+      visitedNodes.push(curr);
+      stepsAccumulator.push({
+        currentNode: curr,
+        visitedNodes: [...visitedNodes],
+        path: [],
+      });
+      // console.log(pq.printPQueue());
+      // console.log(curr, pq.printPQueue());
 
       if (curr === dest) break;
-
-      await delay(2000);
       pq.pop();
 
       for (let i = 1; i < nodeCount + 1; i++) {
@@ -357,11 +361,20 @@ export default function FunctionalDisplayPanel({
       path.push(at);
     }
     path = path.reverse(); // Reverse to get path from source to dest
-    for (let i = 0; i < path.length; i++) {
-      colorFill(path[i], "green");
-      await delay(500);
-    }
+    //change of color happens after this step
+    // for (let i = 0; i < path.length; i++) {
+    //   colorFill(path[i], "green");
+    //   await delay(500);
+    // }
+    stepsAccumulator.push({
+      currentNode: dest,
+      visitedNodes: [...visitedNodes],
+      path: [...path],
+    });
+    setStepsForDijstras(stepsAccumulator);
+    setOutPut(stepsAccumulator);
     console.log("Shortest path:", path);
+    console.log("Steps of Dijstras", stepsAccumulator);
   }
 
   useEffect(() => {
@@ -407,9 +420,7 @@ export default function FunctionalDisplayPanel({
           <div className="flex items-center justify-start w-[70%] min-w-[70%] max-w-[70%] border-r-2 border-[#878C8F]">
             <Button1 onClick={bfsCall}>BFS</Button1>
             <Button1 onClick={dfsCall}>DFS</Button1>
-            <Button1 onClick={() => dijkstrasAlgorithm(adjacencyMatrix, 1)}>
-              Dijstras
-            </Button1>
+            <Button1 onClick={dijstrasAlgorithm}>Dijstras</Button1>
             {currentAlgorithm === "BFS" && (
               <AlgorithmPlayerForBFS
                 currentAlgorithm={currentAlgorithm}
@@ -424,11 +435,12 @@ export default function FunctionalDisplayPanel({
                 setMyNode={setMyNode}
               />
             )}
-            {currentAlgorithm === "dijkstras" && (
+            {currentAlgorithm === "dijkstra's" && (
               <AlgorithmPlayerForDijkstra
                 currentAlgorithm={currentAlgorithm}
                 steps={stepsForDijstras}
                 setMyNode={setMyNode}
+                setSelections={setSelections}
               />
             )}
           </div>
@@ -459,10 +471,6 @@ export default function FunctionalDisplayPanel({
               selections={selections}
               setSelections={setSelections}
             />
-            <Button1 onClick={dijstrasAlgorithm}>
-              {" "}
-              Console Log Adjacency Matrix
-            </Button1>
           </div>
         </div>
       </div>
