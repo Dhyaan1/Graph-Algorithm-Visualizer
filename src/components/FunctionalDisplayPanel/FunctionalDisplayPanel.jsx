@@ -14,7 +14,6 @@ import AlgorithmPlayerForBFS from "../AlgorithmPlayer/AlgorithmPlayerForBFS";
 import AlgorithmPlayerForDFS from "../AlgorithmPlayer/AlgorithmPlayerForDFS";
 import EnterTheSourceInputField from "../InputFields/EnterTheSourceInputField";
 import AlgorithmPlayerForDijkstra from "../AlgorithmPlayer/AlgorithmPlayerForDijkstra";
-import { delay } from "framer-motion";
 
 class QElement {
   constructor(element, priority) {
@@ -138,10 +137,6 @@ export default function FunctionalDisplayPanel({
     });
   }
 
-  // function Pause() {
-  //   setIsPaused((prev) => !prev);
-  // }
-
   function BFS(graph, start, visited, stepsAccumulator) {
     const queue = [];
     const traversal = [];
@@ -192,7 +187,6 @@ export default function FunctionalDisplayPanel({
 
     // Once all BFS calls are done, update the steps state with the accumulated steps
     setSteps(stepsAccumulator);
-    console.log("Steps of BFS", stepsAccumulator);
     setOutPut(stepsAccumulator);
 
     return allTraversals;
@@ -201,7 +195,6 @@ export default function FunctionalDisplayPanel({
   function bfsCall() {
     setIsWeighted(false);
     setCurrentAlgorithm("BFS");
-    console.log("Steps before BFS", steps);
     const arr = bfsForDisconnectedComponents(adjacencyMatrix);
     console.log("BFS");
     arr.forEach((traversal) => {
@@ -298,7 +291,6 @@ export default function FunctionalDisplayPanel({
 
     // Once all DFS calls are done, update the steps state with the accumulated steps
     setStepsForDFS(stepsAccumulator);
-    console.log("Steps of DFS", stepsAccumulator);
     setOutPut(stepsAccumulator);
 
     return allTraversals;
@@ -339,8 +331,6 @@ export default function FunctionalDisplayPanel({
         visitedNodes: [...visitedNodes],
         path: [],
       });
-      // console.log(pq.printPQueue());
-      // console.log(curr, pq.printPQueue());
 
       if (curr === dest) break;
       pq.pop();
@@ -361,11 +351,7 @@ export default function FunctionalDisplayPanel({
       path.push(at);
     }
     path = path.reverse(); // Reverse to get path from source to dest
-    //change of color happens after this step
-    // for (let i = 0; i < path.length; i++) {
-    //   colorFill(path[i], "green");
-    //   await delay(500);
-    // }
+
     stepsAccumulator.push({
       currentNode: dest,
       visitedNodes: [...visitedNodes],
@@ -373,8 +359,6 @@ export default function FunctionalDisplayPanel({
     });
     setStepsForDijstras(stepsAccumulator);
     setOutPut(stepsAccumulator);
-    console.log("Shortest path:", path);
-    console.log("Steps of Dijstras", stepsAccumulator);
   }
 
   useEffect(() => {
@@ -393,15 +377,6 @@ export default function FunctionalDisplayPanel({
       <div className="flex flex-col w-full min-w-full h-full">
         <div className="flex items-center space-x-10">
           <Button1 onClick={ClearCanvas}>Clear Canvas</Button1>
-          {/* <Button1 onClick={() => console.log(myNodes)}>
-            Console Log Nodes
-          </Button1>
-          <Button1 onClick={() => console.log(selections)}>
-            Console Log Selections
-          </Button1>
-          <Button1 onClick={() => console.log(myEdges)}>
-            Console Log all Edges
-          </Button1> */}
           <DirectedOrUndirectedRadioButton
             isDirected={isDirected}
             setIsDirected={setIsDirected}

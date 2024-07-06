@@ -36,7 +36,6 @@ export default function AlgorithmPlayerForDijkstra({
   }
 
   function highlightPath(path) {
-    console.log(path);
     let prev = path[0];
     let edgeIds = [];
     for (let i = 1; i < path.length; i++) {
@@ -45,7 +44,6 @@ export default function AlgorithmPlayerForDijkstra({
       const val2 = path[i] + "->" + prev;
       edgeIds.push(val2);
       prev = path[i];
-      console.log(edgeIds);
     }
     setSelections(edgeIds);
   }
@@ -104,10 +102,6 @@ export default function AlgorithmPlayerForDijkstra({
           currentStep.currentNode,
           currentStep.path
         );
-      }
-
-      if (steps.length === 0) {
-        console.log("Steps length is 0");
       }
     }
   }, [currentStepIndex, steps]);
