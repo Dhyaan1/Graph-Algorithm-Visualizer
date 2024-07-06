@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 /* eslint-disable react/prop-types */
 export default function WeightedOrUnWeightedRadioButton({
   isWeighted,
@@ -23,7 +25,8 @@ export default function WeightedOrUnWeightedRadioButton({
             name="Weighted"
             value="Weighted"
             className="peer hidden"
-            defaultChecked={isWeighted === true}
+            defaultChecked={isWeighted}
+            checked={isWeighted}
           />
           <span className="tracking-widest peer-checked:bg-gradient-to-r peer-checked:from-[#878C8F] peer-checked:to-[#C4CAD0] peer-checked:text-white text-gray-700 p-2 rounded-lg transition duration-150 ease-in-out">
             Weighted
@@ -35,7 +38,8 @@ export default function WeightedOrUnWeightedRadioButton({
             type="radio"
             value="Un-Weighted"
             name="Weighted"
-            defaultChecked={isWeighted === false}
+            defaultChecked={!isWeighted}
+            checked={!isWeighted}
             className="peer hidden"
           />
           <span className="tracking-widest peer-checked:bg-gradient-to-r peer-checked:from-[#878C8F] peer-checked:to-[#C4CAD0] peer-checked:text-white text-gray-700 p-2 rounded-lg transition duration-150 ease-in-out">
