@@ -14,6 +14,80 @@ import AlgorithmPlayerForBFS from "../AlgorithmPlayer/AlgorithmPlayerForBFS";
 import AlgorithmPlayerForDFS from "../AlgorithmPlayer/AlgorithmPlayerForDFS";
 import EnterTheSourceInputField from "../InputFields/EnterTheSourceInputField";
 import AlgorithmPlayerForDijkstra from "../AlgorithmPlayer/AlgorithmPlayerForDijkstra";
+import { delay } from "framer-motion";
+
+class QElement {
+  constructor(element, priority) {
+    this.element = element;
+    this.priority = priority;
+  }
+}
+
+// PriorityQueue class
+class PriorityQueue {
+  // An array is used to implement priority
+  constructor() {
+    this.items = [];
+  }
+
+  // functions to be implemented
+  push(element, priority) {
+    // creating object from queue element
+    let qElement = new QElement(element, priority);
+    let contain = false;
+
+    // iterating through the entire
+    // item array to add element at the
+    // correct location of the Queue
+    for (let i = 0; i < this.items.length; i++) {
+      if (this.items[i].priority > qElement.priority) {
+        // Once the correct location is found it is
+        // enqueued
+        this.items.splice(i, 0, qElement);
+        contain = true;
+        break;
+      }
+    }
+
+    // if the element have the highest priority
+    // it is added at the end of the queue
+    if (!contain) {
+      this.items.push(qElement);
+    }
+  }
+
+  printPQueue() {
+    let str = "";
+    for (let i = 0; i < this.items.length; i++)
+      str += this.items[i].element + " ";
+    return str;
+  }
+  pop() {
+    // return the dequeued element
+    // and remove it.
+    // if the queue is empty
+    // returns Underflow
+    if (this.isEmpty()) return "Underflow";
+    return this.items.shift();
+  }
+  top() {
+    // returns the highest priority element
+    // in the Priority queue without removing it.
+    if (this.isEmpty()) return "No elements in Queue";
+    return this.items[0];
+  }
+  rear() {
+    // returns the lowest priority
+    // element of the queue
+    if (this.isEmpty()) return "No elements in Queue";
+    return this.items[this.items.length - 1];
+  }
+  isEmpty() {
+    // return true if the queue is empty.
+    return this.items.length == 0;
+  }
+  // printPQueue()
+}
 
 export default function FunctionalDisplayPanel({
   setMyEdges,
@@ -240,79 +314,55 @@ export default function FunctionalDisplayPanel({
   }
 
   //this is dijstras algorithm shit don't touch.
+  function delay(milliseconds) {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  }
 
-  // function dijstrasAlgorithm(graph, start) {
-  //   const distance = new Array(nodeCount + 1).fill(Infinity);
-  //   const visited = new Array(nodeCount + 1).fill(false);
-  //   distance[start] = 0;
-  //   for (let i = 1; i <= nodeCount; i++) {
-  //     let min = -1;
-  //     for (let j = 1; j <= nodeCount; j++) {
-  //       if (!visited[j] && (min === -1 || distance[j] < distance[min])) {
-  //         min = j;
-  //       }
-  //     }
-  //     visited[min] = true;
-  //     for (let j = 1; j <= nodeCount; j++) {
-  //       if (graph[min][j] && distance[j] > distance[min] + graph[min][j]) {
-  //         distance[j] = parseInt(distance[min]) + parseInt(graph[min][j]);
-  //       }
-  //     }
-  //   }
-  //   console.log(distance);
-  //   return distance;
-  // }
+  async function dijstrasAlgorithm() {
+    const graph = adjacencyMatrix;
+    const source = 1;
+    const dest = 9;
+    colorFill(source, "blue");
+    colorFill(dest, "blue");
 
-  function dijkstrasAlgorithm(graph, startNode) {
-    setCurrentAlgorithm("dijkstras");
-    const distances = Array(graph.length).fill(Infinity);
-    distances[startNode] = 0;
-    const visited = {};
-    const priorityQueue = [{ node: startNode, distance: 0 }];
-    const stepsAccumulator = []; // Use this to accumulate steps locally first
-    const visitedNodes = []; // Track visited nodes
+    let pq = new PriorityQueue();
+    let dist = new Array(nodeCount + 1).fill(Infinity);
+    let previous = new Array(nodeCount + 1).fill(null); // Array to store previous nodes
+    pq.push(source, 0);
+    dist[source] = 0;
 
-    while (priorityQueue.length > 0) {
-      priorityQueue.sort((a, b) => a.distance - b.distance);
-      const { node: currentNode } = priorityQueue.shift();
-      if (visited[currentNode]) continue;
-      visited[currentNode] = true;
-      visitedNodes.push(currentNode); // Add to visited nodes
+    while (!pq.isEmpty()) {
+      let curr = pq.top().element;
+      let val = pq.top().priority;
+      colorFill(curr, "red");
 
-      const neighbors = graph[currentNode];
-      for (const [neighbor, distance] of neighbors.entries()) {
-        if (distance !== 0) {
-          // Ensure distance is treated as a number
-          const newDistance = distances[currentNode] + Number(distance);
-          if (newDistance < distances[neighbor]) {
-            distances[neighbor] = newDistance;
-            priorityQueue.push({ node: neighbor, distance: newDistance });
-            stepsAccumulator.push({
-              currentNode,
-              visitedNodes: [...visitedNodes], // Copy of visitedNodes at this point
-            });
-          }
+      if (curr === dest) break;
+
+      await delay(2000);
+      pq.pop();
+
+      for (let i = 1; i < nodeCount + 1; i++) {
+        if (graph[curr][i] !== 0 && val + parseInt(graph[curr][i]) < dist[i]) {
+          // Compare with dist[i]
+          dist[i] = val + parseInt(graph[curr][i]); // Update dist[i]
+          previous[i] = curr; // Update previous node for i
+          pq.push(i, dist[i]);
         }
       }
     }
 
-    // Update stepsForDijstras state variable directly at the end
-    setStepsForDijstras(stepsAccumulator);
-    setOutPut(stepsAccumulator);
-    console.log("Steps of Dijstras", stepsAccumulator);
-    console.log("Dijstras distances", distances);
-    return distances;
+    // Retrieve path from source to dest using previous array
+    let path = [];
+    for (let at = dest; at !== null; at = previous[at]) {
+      path.push(at);
+    }
+    path = path.reverse(); // Reverse to get path from source to dest
+    for (let i = 0; i < path.length; i++) {
+      colorFill(path[i], "green");
+      await delay(500);
+    }
+    console.log("Shortest path:", path);
   }
-
-  // Example usage within a React component:
-  // dijkstrasAlgorithm(graph, 0, setStepsForDijstras);
-
-  // useEffect(() => {
-  //   if (adjacencyMatrix.length > 0) {
-  //     const distance = dijstrasAlgorithm(adjacencyMatrix, 1);
-  //     console.log("Dijstras", distance);
-  //   }
-  // }, [adjacencyMatrix]);
 
   useEffect(() => {
     createAdjacencyGraph(myEdges, nodeCount, isDirected, setAdjacencyMatrix);
@@ -409,6 +459,10 @@ export default function FunctionalDisplayPanel({
               selections={selections}
               setSelections={setSelections}
             />
+            <Button1 onClick={dijstrasAlgorithm}>
+              {" "}
+              Console Log Adjacency Matrix
+            </Button1>
           </div>
         </div>
       </div>
