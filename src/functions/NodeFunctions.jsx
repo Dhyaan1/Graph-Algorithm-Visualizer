@@ -1,11 +1,3 @@
-function CreateDFS() {
-  console.log("DFS");
-}
-
-function CreateBFS() {
-  console.log("BFS");
-}
-
 function create2DArray(rows, cols) {
   let arr = new Array(rows);
   for (let i = 0; i < rows; i++) {
@@ -51,48 +43,4 @@ function DeleteNode(
   setSelections([]);
 }
 
-function BFS(graph, start, visited, nodeCount) {
-  const queue = [];
-  const traversal = [];
-  queue.push(start);
-  visited[start] = true;
-  while (queue.length > 0) {
-    const node = queue.shift();
-    traversal.push(node);
-    for (let i = 1; i <= nodeCount; i++) {
-      if (graph[node][i] && !visited[i]) {
-        queue.push(i);
-        visited[i] = true;
-      }
-    }
-  }
-  return traversal;
-}
-function bfsForDisconnectedComponents(graph, nodeCount, myNodes) {
-  const visited = new Array(nodeCount + 1).fill(false);
-  const allTraversals = [];
-
-  myNodes.forEach((node) => {
-    if (!visited[node.id]) {
-      const temp = BFS(graph, node.id, visited);
-      allTraversals.push(temp);
-    }
-  });
-  return allTraversals;
-}
-function bfsCall(adjacencyMatrix, nodeCount, myNodes) {
-  const arr = bfsForDisconnectedComponents(adjacencyMatrix, nodeCount, myNodes);
-  console.log("BFS");
-  arr.forEach((traversal) => {
-    console.log("BFS", traversal);
-  });
-}
-
-export {
-  CreateDFS,
-  CreateBFS,
-  create2DArray,
-  createAdjacencyGraph,
-  DeleteNode,
-  bfsCall,
-};
+export { create2DArray, createAdjacencyGraph, DeleteNode };

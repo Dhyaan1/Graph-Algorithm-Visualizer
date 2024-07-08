@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import Button1 from "../Buttons/Button1";
+import PlayerUI from "./PlayerUI/PlayerUI";
 
 export default function AlgorithmPlayerForBFS({
   currentAlgorithm,
@@ -96,19 +96,13 @@ export default function AlgorithmPlayerForBFS({
   }, [steps]);
 
   return (
-    <div>
-      <Button1 onClick={goBackward} disabled={currentStepIndex === 0}>
-        Backward
-      </Button1>
-      <Button1 onClick={togglePlayPause}>
-        {isPlaying ? "Pause" : "Play BFS"}
-      </Button1>
-      <Button1
-        onClick={goForward}
-        disabled={currentStepIndex === steps.length - 1}
-      >
-        Forward
-      </Button1>
-    </div>
+    <PlayerUI
+      steps={steps}
+      currentStepIndex={currentStepIndex}
+      isPlaying={isPlaying}
+      goBackward={goBackward}
+      goForward={goForward}
+      togglePlayPause={togglePlayPause}
+    />
   );
 }

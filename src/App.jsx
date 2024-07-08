@@ -54,7 +54,7 @@ function App() {
             isWeighted={isWeighted}
             setIsWeighted={setIsWeighted}
           />
-          <div className="h-[80svh] min-h-[80svh] w-screen flex">
+          <div className="h-[75svh] min-h-[75svh] w-screen flex">
             <GraphDisplayPanel
               graphRef={graphRef}
               onNodeClick={onNodeClick}

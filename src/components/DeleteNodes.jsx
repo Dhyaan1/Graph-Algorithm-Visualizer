@@ -23,7 +23,6 @@ export default function DeleteNodes({
     if (selections.length === 1 && !selections[0].includes("->")) {
       setDisableDeleteNode(false);
     }
-    //only for two node selection
   }, [selections]);
   return (
     <>
