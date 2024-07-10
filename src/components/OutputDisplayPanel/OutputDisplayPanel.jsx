@@ -14,16 +14,14 @@ export default function OutputDisplayPanel() {
   const { outPut } = useContext(OutPutContext);
 
   const BfsTabContent = (
-    <Card
-    // className="text-white bg-[#878C8F]"
-    >
+    <Card className="h-full max-h-full">
       <CardHeader>
         <CardTitle>BFS Output</CardTitle>
         <CardDescription>
           This is the output of the Breadth First Search algorithm
         </CardDescription>
       </CardHeader>
-      <CardContent className="overflow-auto max-h-[50svh]">
+      <CardContent className="overflow-auto max-h-[37svh]">
         <p>
           {/* {outPut?.BFS ? JSON.stringify(outPut?.BFS) : "No output available"} */}
           {outPut ? JSON.stringify(outPut) : "No output available"}
@@ -43,7 +41,7 @@ export default function OutputDisplayPanel() {
           This is the output of the Depth First Search algorithm
         </CardDescription>
       </CardHeader>
-      <CardContent className="overflow-auto max-h-[50svh]">
+      <CardContent className="overflow-auto max-h-[37svh]">
         <p>
           {/* {outPut?.DFS ? JSON.stringify(outPut?.DFS) : "No output available"} */}
           {outPut ? JSON.stringify(outPut) : "No output available"}
@@ -63,11 +61,9 @@ export default function OutputDisplayPanel() {
           This is the output of the Dijkstra algorithm
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="overflow-auto max-h-[37svh]">
         <p>
-          {outPut?.Dijkstra
-            ? JSON.stringify(outPut?.Dijkstra)
-            : "No output available"}
+          {outPut?.Dijkstra ? JSON.stringify(outPut) : "No output available"}
         </p>
       </CardContent>
       <CardFooter>

@@ -2,7 +2,7 @@
 export default function DestinationNodeDisplay({ destinationNode }) {
   return (
     <>
-      <div className="bg-gray-200 p-4 rounded-2xl">
+      <div className="bg-gray-200 px-4 rounded-2xl">
         <h2 className="text-xl font-bold">Destination Node</h2>
         {destinationNode === null ? (
           <p className="text-gray-600">No Destination Node Selected</p>

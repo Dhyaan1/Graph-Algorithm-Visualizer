@@ -23,7 +23,7 @@ export default function AlgorithmPlayerForBFS({
         } else if (visitedNodes.includes(nodeIdAsNumber)) {
           color = "red"; // Color for visited nodes
         } else {
-          color = "#B9C74E"; // Default color
+          color = "#8F7900"; // Default color
         }
         return {
           ...node,

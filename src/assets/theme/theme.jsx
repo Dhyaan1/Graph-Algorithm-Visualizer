@@ -1,7 +1,7 @@
 const theme = {
-  canvas: { background: "#201E1F" },
+  canvas: { background: "#031011" },
   node: {
-    fill: "#B9C74E",
+    fill: "#8F7900",
     activeFill: "#EE2677",
     opacity: 1,
     selectedOpacity: 1,
