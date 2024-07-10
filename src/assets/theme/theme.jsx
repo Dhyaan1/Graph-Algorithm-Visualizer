@@ -1,5 +1,5 @@
 const theme = {
-  canvas: { background: "#031011" },
+  canvas: { background: "#0B132B" },
   node: {
     fill: "#8F7900",
     activeFill: "#EE2677",
