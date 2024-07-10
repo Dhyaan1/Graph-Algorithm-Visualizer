@@ -11,14 +11,14 @@ export default function PlayerUI({
 }) {
   return (
     <>
-      <div className="flex items-center justify-center ml-10 space-x-40 p-4 bg-gray-800 text-white rounded-lg shadow-lg">
+      <div className="flex items-center justify-center gap-9 ml-5 px-4 py-2 bg-gray-800 text-white rounded-lg shadow-lg">
         <button
           onClick={goBackward}
           disabled={currentStepIndex === 0}
           aria-label="Rewind"
           className="disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <FiRewind className="h-10 w-10" />
+          <FiRewind className="h-9 w-9" />
         </button>
         <button
           onClick={togglePlayPause}
@@ -26,9 +26,9 @@ export default function PlayerUI({
           className="disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isPlaying ? (
-            <FiPause className="h-10 w-10" />
+            <FiPause className="h-9 w-9" />
           ) : (
-            <FiPlay className="h-10 w-10" />
+            <FiPlay className="h-9 w-9" />
           )}
         </button>
         <button
@@ -37,7 +37,7 @@ export default function PlayerUI({
           aria-label="Forward"
           className="disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <FiFastForward className="h-10 w-10" />
+          <FiFastForward className="h-9 w-9" />
         </button>
       </div>
     </>

@@ -16,6 +16,7 @@ import SourceNodeDisplay from "../SelectedNodes/SourceNodeDisplay";
 import DestinationNodeDisplay from "../SelectedNodes/DestinationNodeDisplay";
 import SetSource from "../SetSource";
 import SetDestination from "../SetDestination";
+import AlgoButton from "../Buttons/AlgoButton";
 
 class QElement {
   constructor(element, priority) {
@@ -136,7 +137,7 @@ export default function FunctionalDisplayPanel({
 
   function SetToDefaultColor() {
     myNodes.forEach((node) => {
-      colorFill(node.id, "#B9C74E");
+      colorFill(node.id, "#8F7900");
     });
   }
 
@@ -401,7 +402,7 @@ export default function FunctionalDisplayPanel({
 
   return (
     <>
-      <div className="flex flex-col gap-y-6 w-full min-w-full h-full p-4">
+      <div className="flex flex-col gap-y-1 w-full min-w-full h-full p-4">
         <div className="flex items-center space-x-10">
           <Button1 onClick={ClearCanvas}>Clear Canvas</Button1>
           <DirectedOrUndirectedRadioButton
@@ -421,10 +422,10 @@ export default function FunctionalDisplayPanel({
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center justify-start w-[60%] min-w-[60%] max-w-[60%] border-r-2 border-[#878C8F]">
-            <Button1 onClick={bfsCall}>BFS</Button1>
-            <Button1 onClick={dfsCall}>DFS</Button1>
-            <Button1 onClick={dijstrasAlgorithm}>Dijstras</Button1>
+          <div className="flex items-center justify-start w-[50%] min-w-[50%] max-w-[50%] border-r-2 border-[#878C8F]">
+            <AlgoButton onClick={bfsCall}>BFS</AlgoButton>
+            <AlgoButton onClick={dfsCall}>DFS</AlgoButton>
+            <AlgoButton onClick={dijstrasAlgorithm}>Dijkstras</AlgoButton>
             {currentAlgorithm === "BFS" && (
               <AlgorithmPlayerForBFS
                 currentAlgorithm={currentAlgorithm}
@@ -448,7 +449,7 @@ export default function FunctionalDisplayPanel({
               />
             )}
           </div>
-          <div className="flex items-center justify-start w-[40%] min-w-[40%] max-w-[40%]">
+          <div className="flex items-center justify-start w-[50%] min-w-[50%] max-w-[50%]">
             <AddNodes
               nodeCount={nodeCount}
               setNodeCount={setNodeCount}
