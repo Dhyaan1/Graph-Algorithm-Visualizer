@@ -402,27 +402,27 @@ export default function FunctionalDisplayPanel({
 
   return (
     <>
-      <div className="flex flex-col gap-y-1 w-full min-w-full h-full p-4">
-        <div className="flex items-center space-x-10">
+      <div className="flex flex-col gap-y-1 w-full min-w-full h-full p-2">
+        <div className="flex items-center gap-4 flex-wrap">
           <Button1 onClick={ClearCanvas}>Clear Canvas</Button1>
-          <DirectedOrUndirectedRadioButton
-            isDirected={isDirected}
-            setIsDirected={setIsDirected}
-          />
-          <WeightedOrUnWeightedRadioButton
-            isWeighted={isWeighted}
-            setIsWeighted={setIsWeighted}
-          />
-          {/* <EnterTheSourceInputField
-            sourceNode={sourceNode}
-            setSourceNode={setSourceNode}
-          /> */}
-          <SourceNodeDisplay sourceNode={sourceNode} />
-          <DestinationNodeDisplay destinationNode={destinationNode} />
+          <div className="flex gap-4 max-[551px]:flex-col">
+            <DirectedOrUndirectedRadioButton
+              isDirected={isDirected}
+              setIsDirected={setIsDirected}
+            />
+            <WeightedOrUnWeightedRadioButton
+              isWeighted={isWeighted}
+              setIsWeighted={setIsWeighted}
+            />
+          </div>
+          <div className="flex gap-4 max-[429px]:flex-col">
+            <SourceNodeDisplay sourceNode={sourceNode} />
+            <DestinationNodeDisplay destinationNode={destinationNode} />
+          </div>
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center justify-start w-[50%] min-w-[50%] max-w-[50%] border-r-2 border-[#878C8F]">
+        <div className="flex items-center justify-between max-[459px]:flex-col">
+          <div className="order-1 max-[459px]:order-2 max-[459px]:justify-center flex flex-wrap items-center flex-shrink justify-start min-[459px]:w-[50%] min-[459px]:min-w-[50%] min-[459px]:max-w-[50%] border-r-2 border-[#878C8F] max-[459px]:border-0">
             <AlgoButton onClick={bfsCall}>BFS</AlgoButton>
             <AlgoButton onClick={dfsCall}>DFS</AlgoButton>
             <AlgoButton onClick={dijstrasAlgorithm}>Dijkstras</AlgoButton>
@@ -449,7 +449,7 @@ export default function FunctionalDisplayPanel({
               />
             )}
           </div>
-          <div className="flex items-center justify-start w-[50%] min-w-[50%] max-w-[50%]">
+          <div className="order-2 max-[459px]:order-1 flex items-center flex-wrap flex-grow justify-start min-[459px]:w-[50%] min-[459px]:min-w-[50%] min-[459px]:max-w-[50%]">
             <AddNodes
               nodeCount={nodeCount}
               setNodeCount={setNodeCount}
@@ -476,18 +476,20 @@ export default function FunctionalDisplayPanel({
               selections={selections}
               setSelections={setSelections}
             />
-            <SetSource
-              sourceNode={sourceNode}
-              setSourceNode={setSourceNode}
-              selections={selections}
-              setSelections={setSelections}
-            />
-            <SetDestination
-              destinationNode={destinationNode}
-              setDestinationNode={setDestinationNode}
-              selections={selections}
-              setSelections={setSelections}
-            />
+            <div className="flex gap-2 max-[660px]:flex-col">
+              <SetSource
+                sourceNode={sourceNode}
+                setSourceNode={setSourceNode}
+                selections={selections}
+                setSelections={setSelections}
+              />
+              <SetDestination
+                destinationNode={destinationNode}
+                setDestinationNode={setDestinationNode}
+                selections={selections}
+                setSelections={setSelections}
+              />
+            </div>
           </div>
         </div>
       </div>

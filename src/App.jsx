@@ -39,7 +39,7 @@ function App() {
   return (
     <>
       <OutPutContextProvider>
-        <div className="h-screen w-screen relative flex flex-col">
+        <div className="h-screen w-screen relative flex flex-col max-[950px]:h-auto">
           <FunctionalDisplayPanel
             setMyEdges={setMyEdges}
             setMyNode={setMyNode}
@@ -54,7 +54,7 @@ function App() {
             isWeighted={isWeighted}
             setIsWeighted={setIsWeighted}
           />
-          <div className="h-[70svh] min-h-[70svh] gap-1 w-screen flex">
+          <div className="h-[70svh] min-h-[70svh] gap-1 w-screen flex max-[950px]:flex-wrap p-2">
             <GraphDisplayPanel
               graphRef={graphRef}
               onNodeClick={onNodeClick}

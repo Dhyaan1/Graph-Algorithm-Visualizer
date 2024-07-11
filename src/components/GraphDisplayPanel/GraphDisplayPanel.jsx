@@ -32,7 +32,10 @@ export default function GraphDisplayPanel({
   }
   return (
     <>
-      <div className="w-full h-full" style={{ transform: "translate(0%, 0%)" }}>
+      <div
+        className="w-full h-full bg-[#0B132B] border-[2px] border-[#3A506B] rounded-2xl overflow-hidden"
+        style={{ transform: "translate(0%, 0%)" }}
+      >
         <GraphCanvas
           ref={graphRef}
           nodes={myNodes}
