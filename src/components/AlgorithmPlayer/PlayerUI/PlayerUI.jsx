@@ -11,7 +11,7 @@ export default function PlayerUI({
 }) {
   return (
     <>
-      <div className="flex items-center justify-center gap-9 ml-5 px-4 py-2 bg-gray-800 text-white rounded-lg shadow-lg">
+      <div className="flex items-center justify-center gap-9 mr-2 px-4 py-2 border-[2px] border-[#3A506B] bg-[#0B132B] text-white rounded-lg shadow-lg">
         <button
           onClick={goBackward}
           disabled={currentStepIndex === 0}
