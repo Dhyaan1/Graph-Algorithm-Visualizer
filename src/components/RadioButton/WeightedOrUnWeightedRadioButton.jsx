@@ -13,7 +13,7 @@ export default function WeightedOrUnWeightedRadioButton({
 
   return (
     <>
-      <div className="flex space-x-2 border-[2px] border-[#FCF7FF] rounded-xl select-none m-4">
+      <div className="flex space-x-2 border-[2px] border-[#FCF7FF] rounded-xl select-none my-4">
         <label className="radio flex flex-grow items-center justify-center rounded-lg p-1 cursor-pointer">
           <input
             type="radio"
@@ -23,7 +23,7 @@ export default function WeightedOrUnWeightedRadioButton({
             checked={isWeighted}
             onChange={handleWeightedOrUnWeighted}
           />
-          <span className="tracking-widest peer-checked:bg-gradient-to-r peer-checked:from-[#878C8F] peer-checked:to-[#C4CAD0] peer-checked:text-white text-gray-700 p-2 rounded-lg transition duration-150 ease-in-out">
+          <span className="tracking-widest peer-checked:bg-gradient-to-r peer-checked:from-[#3A506B] peer-checked:to-[#3FA2A2] peer-checked:text-white text-gray-700 p-2 rounded-lg transition duration-150 ease-in-out">
             Weighted
           </span>
         </label>
@@ -37,7 +37,7 @@ export default function WeightedOrUnWeightedRadioButton({
             className="peer hidden"
             onChange={handleWeightedOrUnWeighted}
           />
-          <span className="tracking-widest peer-checked:bg-gradient-to-r peer-checked:from-[#878C8F] peer-checked:to-[#C4CAD0] peer-checked:text-white text-gray-700 p-2 rounded-lg transition duration-150 ease-in-out">
+          <span className="tracking-widest peer-checked:bg-gradient-to-r peer-checked:from-[#3A506B] peer-checked:to-[#3FA2A2] peer-checked:text-white text-gray-700 p-2 rounded-lg transition duration-150 ease-in-out">
             Un-Weighted
           </span>
         </label>
