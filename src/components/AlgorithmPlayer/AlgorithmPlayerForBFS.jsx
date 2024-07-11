@@ -17,11 +17,11 @@ export default function AlgorithmPlayerForBFS({
         let color;
         const nodeIdAsNumber = parseInt(node.id, 10); // Convert node.id to a number
         if (nodeIdAsNumber === currentNodeId) {
-          color = "#1C7C54"; // Color for the current node
+          color = "#1C7C54"; // Color for the current node green
         } else if (queuedNodes?.includes(nodeIdAsNumber)) {
-          color = "white"; // Color for queued nodes;
+          color = "#6c757d"; // Color for queued nodes grey
         } else if (visitedNodes.includes(nodeIdAsNumber)) {
-          color = "red"; // Color for visited nodes
+          color = "#d90429"; // Color for visited nodes red
         } else {
           color = "#8F7900"; // Default color
         }

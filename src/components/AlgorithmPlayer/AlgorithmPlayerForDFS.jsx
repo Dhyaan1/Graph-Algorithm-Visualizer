@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import Button1 from "../Buttons/Button1";
 import PlayerUI from "./PlayerUI/PlayerUI";
 
 export default function AlgorithmPlayerForDFS({
@@ -18,11 +17,11 @@ export default function AlgorithmPlayerForDFS({
         let color;
         const nodeIdAsNumber = parseInt(node.id, 10); // Convert node.id to a number
         if (backtrackingNodes?.includes(nodeIdAsNumber)) {
-          color = "blue"; // Color for backtracking nodes
+          color = "#0D41E1"; // Color for backtracking nodes blue
         } else if (nodeIdAsNumber === currentNodeId) {
           color = "#1C7C54"; // Color for the current node
         } else if (visitedNodes.includes(nodeIdAsNumber)) {
-          color = "red"; // Color for visited nodes
+          color = "#d90429"; // Color for visited nodes red
         } else {
           color = "#8F7900"; // Default color
         }

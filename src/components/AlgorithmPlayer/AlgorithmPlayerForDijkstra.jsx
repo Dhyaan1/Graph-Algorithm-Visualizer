@@ -22,7 +22,7 @@ export default function AlgorithmPlayerForDijkstra({
         } else if (nodeIdAsNumber === currentNodeId) {
           color = "#1C7C54"; // Color for the current node
         } else if (visitedNodes.includes(nodeIdAsNumber)) {
-          color = "red"; // Color for visited nodes
+          color = "#d90429"; // Color for visited nodes red
         } else {
           color = "#8F7900"; // Default color
         }
