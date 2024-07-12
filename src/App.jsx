@@ -7,8 +7,6 @@ import GraphDisplayPanel from "./components/GraphDisplayPanel/GraphDisplayPanel"
 import FunctionalDisplayPanel from "./components/FunctionalDisplayPanel/FunctionalDisplayPanel";
 import OutputDisplayPanel from "./components/OutputDisplayPanel/OutputDisplayPanel";
 import { OutPutContextProvider } from "./components/context/OutPutContextProvider";
-// import { AnimatePresence } from "framer-motion";
-// import AddEdgeModal from "./components/Modals/AddEdgeModal";
 
 function App() {
   const graphRef = useRef(null);
@@ -17,6 +15,7 @@ function App() {
   const [isWeighted, setIsWeighted] = useState(false);
   const [myEdges, setMyEdges] = useState(dummyedges);
   const [nodeCount, setNodeCount] = useState(myNodes.length);
+  const [currentAlgorithm, setCurrentAlgorithm] = useState("none");
 
   const {
     selections,
@@ -53,6 +52,8 @@ function App() {
             setIsDirected={setIsDirected}
             isWeighted={isWeighted}
             setIsWeighted={setIsWeighted}
+            currentAlgorithm={currentAlgorithm}
+            setCurrentAlgorithm={setCurrentAlgorithm}
           />
           <div className="h-[70svh] min-h-[70svh] gap-1 w-screen flex max-[950px]:flex-wrap p-2">
             <GraphDisplayPanel
@@ -69,6 +70,7 @@ function App() {
               onCanvasClick={onCanvasClick}
               onNodePointerOver={onNodePointerOver}
               onNodePointerOut={onNodePointerOut}
+              currentAlgorithm={currentAlgorithm}
             />
             <OutputDisplayPanel />
           </div>
