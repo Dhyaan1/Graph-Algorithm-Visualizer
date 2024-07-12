@@ -17,7 +17,7 @@ export default function AlgorithmPlayerForBFS({
         let color;
         const nodeIdAsNumber = parseInt(node.id, 10); // Convert node.id to a number
         if (nodeIdAsNumber === currentNodeId) {
-          color = "#1C7C54"; // Color for the current node green
+          color = "#5BC0BE"; // Color for the current node teal
         } else if (queuedNodes?.includes(nodeIdAsNumber)) {
           color = "#6c757d"; // Color for queued nodes grey
         } else if (visitedNodes.includes(nodeIdAsNumber)) {

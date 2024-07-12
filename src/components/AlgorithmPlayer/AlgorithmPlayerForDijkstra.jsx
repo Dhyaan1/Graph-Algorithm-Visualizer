@@ -20,7 +20,7 @@ export default function AlgorithmPlayerForDijkstra({
         if (path.includes(nodeIdAsNumber)) {
           color = "green"; // Color for the nodes in the path
         } else if (nodeIdAsNumber === currentNodeId) {
-          color = "#1C7C54"; // Color for the current node
+          color = "#5BC0BE"; // Color for the current node teal
         } else if (visitedNodes.includes(nodeIdAsNumber)) {
           color = "#d90429"; // Color for visited nodes red
         } else {
@@ -49,6 +49,7 @@ export default function AlgorithmPlayerForDijkstra({
   }
 
   const goForward = () => {
+    setSelections([]);
     setCurrentStepIndex((prevIndex) => {
       const newIndex = Math.min(prevIndex + 1, steps.length - 1);
       // Check if we've reached the last step after updating
@@ -62,6 +63,7 @@ export default function AlgorithmPlayerForDijkstra({
   };
 
   const goBackward = () => {
+    setSelections([]);
     setCurrentStepIndex((prevIndex) => Math.max(prevIndex - 1, 0));
   };
 

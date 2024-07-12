@@ -19,7 +19,7 @@ export default function AlgorithmPlayerForDFS({
         if (backtrackingNodes?.includes(nodeIdAsNumber)) {
           color = "#0D41E1"; // Color for backtracking nodes blue
         } else if (nodeIdAsNumber === currentNodeId) {
-          color = "#1C7C54"; // Color for the current node
+          color = "#5BC0BE"; // Color for the current node teal
         } else if (visitedNodes.includes(nodeIdAsNumber)) {
           color = "#d90429"; // Color for visited nodes red
         } else {
