@@ -22,13 +22,24 @@ export default function OutputDisplayPanel() {
         </CardDescription>
       </CardHeader>
       <CardContent className="overflow-auto max-h-[37svh] text-white max-[950px]:max-h-[50svh]">
-        <p>
-          {/* {outPut?.BFS ? JSON.stringify(outPut?.BFS) : "No output available"} */}
-          {outPut ? JSON.stringify(outPut) : "No output available"}
-        </p>
+        <div>
+          <h6>Steps</h6>
+          <span>
+            {outPut.BFS
+              ? JSON.stringify(outPut.BFS.steps)
+              : "No output available"}
+          </span>
+        </div>
       </CardContent>
       <CardFooter className="text-white">
-        <p>BFS Card Footer</p>
+        <div>
+          <h6>Traversal</h6>
+          <span>
+            {outPut.BFS
+              ? JSON.stringify(outPut.BFS.traversal)
+              : "No output available"}
+          </span>
+        </div>
       </CardFooter>
     </Card>
   );
@@ -42,13 +53,24 @@ export default function OutputDisplayPanel() {
         </CardDescription>
       </CardHeader>
       <CardContent className="overflow-auto max-h-[37svh] text-white max-[950px]:max-h-[50svh]">
-        <p>
-          {/* {outPut?.DFS ? JSON.stringify(outPut?.DFS) : "No output available"} */}
-          {outPut ? JSON.stringify(outPut) : "No output available"}
-        </p>
+        <div>
+          <h6>Steps</h6>
+          <span>
+            {outPut.DFS
+              ? JSON.stringify(outPut.DFS.steps)
+              : "No output available"}
+          </span>
+        </div>
       </CardContent>
       <CardFooter className="text-white">
-        <p>DFS Card Footer</p>
+        <div>
+          <h6>Traversal</h6>
+          <span>
+            {outPut.DFS
+              ? JSON.stringify(outPut.DFS.traversal)
+              : "No output available"}
+          </span>
+        </div>
       </CardFooter>
     </Card>
   );
@@ -62,12 +84,24 @@ export default function OutputDisplayPanel() {
         </CardDescription>
       </CardHeader>
       <CardContent className="overflow-auto max-h-[37svh] text-white max-[950px]:max-h-[50svh]">
-        <p>
-          {outPut?.Dijkstra ? JSON.stringify(outPut) : "No output available"}
-        </p>
+        <div>
+          <h6>Steps</h6>
+          <span>
+            {outPut?.Dijkstra
+              ? JSON.stringify(outPut.Dijkstra.steps)
+              : "No output available"}
+          </span>
+        </div>
       </CardContent>
       <CardFooter className="text-white">
-        <p>Dijkstra Card Footer</p>
+        <div>
+          <h6>Traversal</h6>
+          <span>
+            {outPut?.Dijkstra
+              ? JSON.stringify(outPut.Dijkstra.traversal)
+              : "No output available"}
+          </span>
+        </div>
       </CardFooter>
     </Card>
   );
