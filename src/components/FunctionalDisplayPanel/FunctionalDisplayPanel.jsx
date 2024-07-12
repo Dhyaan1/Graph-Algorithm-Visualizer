@@ -103,9 +103,11 @@ export default function FunctionalDisplayPanel({
   setIsDirected,
   isWeighted,
   setIsWeighted,
+  currentAlgorithm,
+  setCurrentAlgorithm,
 }) {
   const [adjacencyMatrix, setAdjacencyMatrix] = useState([]);
-  const [currentAlgorithm, setCurrentAlgorithm] = useState("none");
+
   const [steps, setSteps] = useState([]);
   const [stepsForDFS, setStepsForDFS] = useState([]);
   const [stepsForDijstras, setStepsForDijstras] = useState([]);
@@ -168,7 +170,6 @@ export default function FunctionalDisplayPanel({
         }
       }
     }
-
     return traversal;
   }
 
@@ -191,7 +192,10 @@ export default function FunctionalDisplayPanel({
 
     // Once all BFS calls are done, update the steps state with the accumulated steps
     setSteps(stepsAccumulator);
-    setOutPut(stepsAccumulator);
+    setOutPut((prev) => ({
+      ...prev,
+      BFS: { traversal: allTraversals, steps: stepsAccumulator },
+    }));
 
     return allTraversals;
   }
@@ -295,7 +299,10 @@ export default function FunctionalDisplayPanel({
 
     // Once all DFS calls are done, update the steps state with the accumulated steps
     setStepsForDFS(stepsAccumulator);
-    setOutPut(stepsAccumulator);
+    setOutPut((prev) => ({
+      ...prev,
+      DFS: { traversal: allTraversals, steps: stepsAccumulator },
+    }));
 
     return allTraversals;
   }
@@ -362,18 +369,23 @@ export default function FunctionalDisplayPanel({
       path: [...path],
     });
     setStepsForDijstras(stepsAccumulator);
-    setOutPut(stepsAccumulator);
+    setOutPut((prev) => ({
+      ...prev,
+      Dijkstra: { traversal: path, steps: stepsAccumulator },
+    }));
   }
 
   useEffect(() => {
     createAdjacencyGraph(myEdges, nodeCount, isDirected, setAdjacencyMatrix);
   }, [myEdges, myNodes.length, isDirected, nodeCount]);
 
+  // Canvas reset
   useEffect(() => {
     setSteps([]);
     setStepsForDFS([]);
     setCurrentAlgorithm("none");
     SetToDefaultColor();
+    setSelections([]);
   }, [myEdges, myNodes.length, isDirected, nodeCount, sourceNode]);
 
   // if source or destination node is deleted
@@ -425,7 +437,14 @@ export default function FunctionalDisplayPanel({
           <div className="order-1 max-[459px]:order-2 max-[459px]:justify-center flex flex-wrap items-center flex-shrink justify-start min-[459px]:w-[50%] min-[459px]:min-w-[50%] min-[459px]:max-w-[50%] border-r-2 border-[#878C8F] max-[459px]:border-0">
             <AlgoButton onClick={bfsCall}>BFS</AlgoButton>
             <AlgoButton onClick={dfsCall}>DFS</AlgoButton>
-            <AlgoButton onClick={dijstrasAlgorithm}>Dijkstras</AlgoButton>
+            <AlgoButton
+              onClick={async () => {
+                await setIsDirected("end"); // Need to await as changing Directed or Undirected resets the canvas
+                dijstrasAlgorithm();
+              }}
+            >
+              Dijkstras
+            </AlgoButton>
             {currentAlgorithm === "BFS" && (
               <AlgorithmPlayerForBFS
                 currentAlgorithm={currentAlgorithm}
