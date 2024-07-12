@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { GraphCanvas } from "reagraph";
+import NodeLegends from "./NodeLegends";
 
 export default function GraphDisplayPanel({
   graphRef,
@@ -15,6 +16,7 @@ export default function GraphDisplayPanel({
   onCanvasClick,
   onNodePointerOver,
   onNodePointerOut,
+  currentAlgorithm,
 }) {
   function handleNodeClick(node) {
     onNodeClick(node); // Dont really need this anymore
@@ -33,9 +35,10 @@ export default function GraphDisplayPanel({
   return (
     <>
       <div
-        className="w-full h-full bg-[#0B132B] border-[2px] border-[#3A506B] rounded-2xl overflow-hidden"
+        className="relative w-full h-full bg-[#0B132B] border-[2px] border-[#3A506B] rounded-2xl overflow-hidden"
         style={{ transform: "translate(0%, 0%)" }}
       >
+        <NodeLegends currentAlgorithm={currentAlgorithm} />
         <GraphCanvas
           ref={graphRef}
           nodes={myNodes}
