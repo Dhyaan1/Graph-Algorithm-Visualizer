@@ -105,6 +105,8 @@ export default function FunctionalDisplayPanel({
   setIsWeighted,
   currentAlgorithm,
   setCurrentAlgorithm,
+  currentStepIndex,
+  setCurrentStepIndex,
 }) {
   const [adjacencyMatrix, setAdjacencyMatrix] = useState([]);
 
@@ -196,18 +198,13 @@ export default function FunctionalDisplayPanel({
       ...prev,
       BFS: { traversal: allTraversals, steps: stepsAccumulator },
     }));
-
-    return allTraversals;
   }
 
   function bfsCall() {
+    setSelections([]);
     setIsWeighted(false);
     setCurrentAlgorithm("BFS");
-    const arr = bfsForDisconnectedComponents(adjacencyMatrix);
-    console.log("BFS");
-    arr.forEach((traversal) => {
-      console.log("BFS", traversal);
-    });
+    bfsForDisconnectedComponents(adjacencyMatrix);
   }
 
   function DFS(
@@ -303,22 +300,18 @@ export default function FunctionalDisplayPanel({
       ...prev,
       DFS: { traversal: allTraversals, steps: stepsAccumulator },
     }));
-
-    return allTraversals;
   }
 
   function dfsCall() {
+    setSelections([]);
     setIsWeighted(false);
     setCurrentAlgorithm("DFS");
-    const arr = DFSForDisconnectedComponents(adjacencyMatrix);
-    console.log("DFS");
-    arr.forEach((traversal) => {
-      console.log("Traversal", traversal);
-    });
+    DFSForDisconnectedComponents(adjacencyMatrix);
   }
 
   //this is dijstras algorithm shit don't touch.
   function dijstrasAlgorithm() {
+    setSelections([]);
     setIsWeighted(true);
     setCurrentAlgorithm("dijkstra's");
     const graph = adjacencyMatrix;
@@ -371,7 +364,7 @@ export default function FunctionalDisplayPanel({
     setStepsForDijstras(stepsAccumulator);
     setOutPut((prev) => ({
       ...prev,
-      Dijkstra: { traversal: path, steps: stepsAccumulator },
+      Dijkstra: { path: path, steps: stepsAccumulator },
     }));
   }
 
@@ -381,11 +374,10 @@ export default function FunctionalDisplayPanel({
 
   // Canvas reset
   useEffect(() => {
-    setSteps([]);
-    setStepsForDFS([]);
     setCurrentAlgorithm("none");
     SetToDefaultColor();
     setSelections([]);
+    setCurrentStepIndex(0);
   }, [myEdges, myNodes.length, isDirected, nodeCount, sourceNode]);
 
   // if source or destination node is deleted
@@ -443,13 +435,15 @@ export default function FunctionalDisplayPanel({
                 dijstrasAlgorithm();
               }}
             >
-              Dijkstras
+              Dijkstra&apos;s
             </AlgoButton>
             {currentAlgorithm === "BFS" && (
               <AlgorithmPlayerForBFS
                 currentAlgorithm={currentAlgorithm}
                 steps={steps}
                 setMyNode={setMyNode}
+                currentStepIndex={currentStepIndex}
+                setCurrentStepIndex={setCurrentStepIndex}
               />
             )}
             {currentAlgorithm === "DFS" && (
@@ -457,6 +451,8 @@ export default function FunctionalDisplayPanel({
                 currentAlgorithm={currentAlgorithm}
                 steps={stepsForDFS}
                 setMyNode={setMyNode}
+                currentStepIndex={currentStepIndex}
+                setCurrentStepIndex={setCurrentStepIndex}
               />
             )}
             {currentAlgorithm === "dijkstra's" && (
@@ -465,6 +461,8 @@ export default function FunctionalDisplayPanel({
                 steps={stepsForDijstras}
                 setMyNode={setMyNode}
                 setSelections={setSelections}
+                currentStepIndex={currentStepIndex}
+                setCurrentStepIndex={setCurrentStepIndex}
               />
             )}
           </div>
