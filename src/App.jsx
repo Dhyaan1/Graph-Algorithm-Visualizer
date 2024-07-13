@@ -16,6 +16,7 @@ function App() {
   const [myEdges, setMyEdges] = useState(dummyedges);
   const [nodeCount, setNodeCount] = useState(myNodes.length);
   const [currentAlgorithm, setCurrentAlgorithm] = useState("none");
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
   const {
     selections,
@@ -54,6 +55,8 @@ function App() {
             setIsWeighted={setIsWeighted}
             currentAlgorithm={currentAlgorithm}
             setCurrentAlgorithm={setCurrentAlgorithm}
+            currentStepIndex={currentStepIndex}
+            setCurrentStepIndex={setCurrentStepIndex}
           />
           <div className="h-[70svh] min-h-[70svh] gap-1 w-screen flex max-[950px]:flex-wrap p-2">
             <GraphDisplayPanel
@@ -72,7 +75,10 @@ function App() {
               onNodePointerOut={onNodePointerOut}
               currentAlgorithm={currentAlgorithm}
             />
-            <OutputDisplayPanel />
+            <OutputDisplayPanel
+              currentAlgorithm={currentAlgorithm}
+              currentStepIndex={currentStepIndex}
+            />
           </div>
         </div>
       </OutPutContextProvider>
