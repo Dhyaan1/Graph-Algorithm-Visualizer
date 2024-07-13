@@ -6,21 +6,22 @@ export default function AlgorithmPlayerForBFS({
   currentAlgorithm,
   steps,
   setMyNode,
+  currentStepIndex,
+  setCurrentStepIndex,
 }) {
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
 
   function colorNodes(queuedNodes, visitedNodes, currentNodeId) {
     setMyNode((currentNodes) => {
-      const newNodes = currentNodes.map((node) => {
+      const newNodes = currentNodes?.map((node) => {
         let color;
-        const nodeIdAsNumber = parseInt(node.id, 10); // Convert node.id to a number
+        const nodeIdAsNumber = parseInt(node?.id, 10); // Convert node.id to a number
         if (nodeIdAsNumber === currentNodeId) {
           color = "#5BC0BE"; // Color for the current node teal
         } else if (queuedNodes?.includes(nodeIdAsNumber)) {
           color = "#6c757d"; // Color for queued nodes grey
-        } else if (visitedNodes.includes(nodeIdAsNumber)) {
+        } else if (visitedNodes?.includes(nodeIdAsNumber)) {
           color = "#d90429"; // Color for visited nodes red
         } else {
           color = "#8F7900"; // Default color
@@ -36,9 +37,9 @@ export default function AlgorithmPlayerForBFS({
 
   const goForward = () => {
     setCurrentStepIndex((prevIndex) => {
-      const newIndex = Math.min(prevIndex + 1, steps.length - 1);
+      const newIndex = Math.min(prevIndex + 1, steps?.length - 1);
       // Check if we've reached the last step after updating
-      if (newIndex === steps.length - 1) {
+      if (newIndex === steps?.length - 1) {
         setIsPlaying(false);
       }
       return newIndex;
@@ -78,13 +79,13 @@ export default function AlgorithmPlayerForBFS({
 
   useEffect(() => {
     if (currentAlgorithm === "BFS") {
-      if (steps.length > 0) {
+      if (steps?.length > 0) {
         const currentStep = steps[currentStepIndex];
         // Assuming colorNodes function is defined and available in this scope
         colorNodes(
           currentStep?.queuedNodes,
-          currentStep.visitedNodes,
-          currentStep.currentNode
+          currentStep?.visitedNodes,
+          currentStep?.currentNode
         );
       }
     }

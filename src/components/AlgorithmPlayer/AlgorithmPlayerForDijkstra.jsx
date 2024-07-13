@@ -7,21 +7,22 @@ export default function AlgorithmPlayerForDijkstra({
   steps,
   setMyNode,
   setSelections,
+  currentStepIndex,
+  setCurrentStepIndex,
 }) {
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
 
   function colorNodes(visitedNodes, currentNodeId, path) {
     setMyNode((currentNodes) => {
-      const newNodes = currentNodes.map((node) => {
+      const newNodes = currentNodes?.map((node) => {
         let color;
-        const nodeIdAsNumber = parseInt(node.id, 10); // Convert node.id to a number
-        if (path.includes(nodeIdAsNumber)) {
+        const nodeIdAsNumber = parseInt(node?.id, 10); // Convert node.id to a number
+        if (path?.includes(nodeIdAsNumber)) {
           color = "green"; // Color for the nodes in the path
         } else if (nodeIdAsNumber === currentNodeId) {
           color = "#5BC0BE"; // Color for the current node teal
-        } else if (visitedNodes.includes(nodeIdAsNumber)) {
+        } else if (visitedNodes?.includes(nodeIdAsNumber)) {
           color = "#d90429"; // Color for visited nodes red
         } else {
           color = "#8F7900"; // Default color
@@ -38,11 +39,11 @@ export default function AlgorithmPlayerForDijkstra({
   function highlightPath(path) {
     let prev = path[0];
     let edgeIds = [];
-    for (let i = 1; i < path.length; i++) {
+    for (let i = 1; i < path?.length; i++) {
       let val1 = prev + "->" + path[i];
-      edgeIds.push(val1);
+      edgeIds?.push(val1);
       const val2 = path[i] + "->" + prev;
-      edgeIds.push(val2);
+      edgeIds?.push(val2);
       prev = path[i];
     }
     setSelections(edgeIds);
@@ -96,13 +97,13 @@ export default function AlgorithmPlayerForDijkstra({
 
   useEffect(() => {
     if (currentAlgorithm === "dijkstra's") {
-      if (steps.length > 0) {
+      if (steps?.length > 0) {
         const currentStep = steps[currentStepIndex];
         // Assuming colorNodes function is defined and available in this scope
         colorNodes(
-          currentStep.visitedNodes,
-          currentStep.currentNode,
-          currentStep.path
+          currentStep?.visitedNodes,
+          currentStep?.currentNode,
+          currentStep?.path
         );
       }
     }

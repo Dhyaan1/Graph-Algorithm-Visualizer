@@ -6,21 +6,22 @@ export default function AlgorithmPlayerForDFS({
   currentAlgorithm,
   steps,
   setMyNode,
+  currentStepIndex,
+  setCurrentStepIndex,
 }) {
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
 
   function colorNodes(backtrackingNodes, visitedNodes, currentNodeId) {
     setMyNode((currentNodes) => {
-      const newNodes = currentNodes.map((node) => {
+      const newNodes = currentNodes?.map((node) => {
         let color;
         const nodeIdAsNumber = parseInt(node.id, 10); // Convert node.id to a number
         if (backtrackingNodes?.includes(nodeIdAsNumber)) {
           color = "#0D41E1"; // Color for backtracking nodes blue
         } else if (nodeIdAsNumber === currentNodeId) {
           color = "#5BC0BE"; // Color for the current node teal
-        } else if (visitedNodes.includes(nodeIdAsNumber)) {
+        } else if (visitedNodes?.includes(nodeIdAsNumber)) {
           color = "#d90429"; // Color for visited nodes red
         } else {
           color = "#8F7900"; // Default color
@@ -83,13 +84,9 @@ export default function AlgorithmPlayerForDFS({
         // Assuming colorNodes function is defined and available in this scope
         colorNodes(
           currentStep?.backtrackingNodes,
-          currentStep.visitedNodes,
-          currentStep.currentNode
+          currentStep?.visitedNodes,
+          currentStep?.currentNode
         );
-      }
-
-      if (steps.length === 0) {
-        console.log("Steps length is 0");
       }
     }
   }, [currentStepIndex, steps]);
