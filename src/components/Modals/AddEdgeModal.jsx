@@ -34,7 +34,11 @@ export default function AddEdgeModal({
   AddEdge,
   selections,
 }) {
-  const [edgeCost, setEdgeCost] = useState("");
+  const [edgeCost, setEdgeCost] = useState(1);
+
+  function handleAddEdge() {
+    AddEdge(selections[0], selections[1], edgeCost);
+  }
 
   return (
     <Backdrop onClick={handleClose}>
@@ -44,23 +48,32 @@ export default function AddEdgeModal({
         initial="hidden"
         animate="visible"
         exit="exit"
-        className="flex flex-col space-y-10 items-center justify-center w-full h-52 max-w-3xl rounded-3xl bg-[#201E1F] border border-gray-200 shadow-md"
+        className="flex flex-col space-y-5 items-center justify-center w-[90%] h-52 max-w-3xl rounded-3xl bg-[#201E1F] border border-gray-200 shadow-md"
       >
         <input
           type="number"
           placeholder="Path/Edge Cost"
           value={edgeCost}
           onChange={(e) => setEdgeCost(e.target.value)}
+          onKeyDown={(e) =>
+            e.key === "Enter" && !disableAddEdge && handleAddEdge()
+          }
           className="w-1/2 h-10 px-4 text-white bg-[#201E1F] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
         />
-        {!disableAddEdge && (
-          <Button1
-            disabled={disableAddEdge}
-            onClick={() => AddEdge(selections[0], selections[1], edgeCost)}
-          >
-            Add Edge
-          </Button1>
-        )}
+        <div className="flex flex-col items-center justify-center">
+          <p className="text-white text-sm px-4">
+            Note: If you don&apos;t specify the edge cost, a random cost will be
+            assigned.
+          </p>
+          {!disableAddEdge && (
+            <Button1
+              disabled={disableAddEdge}
+              onClick={() => AddEdge(selections[0], selections[1], edgeCost)}
+            >
+              Add Edge
+            </Button1>
+          )}
+        </div>
       </motion.div>
     </Backdrop>
   );
