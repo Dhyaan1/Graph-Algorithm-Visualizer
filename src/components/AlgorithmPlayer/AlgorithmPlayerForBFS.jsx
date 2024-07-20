@@ -20,7 +20,7 @@ export default function AlgorithmPlayerForBFS({
         if (nodeIdAsNumber === currentNodeId) {
           color = "#5BC0BE"; // Color for the current node teal
         } else if (queuedNodes?.includes(nodeIdAsNumber)) {
-          color = "#6c757d"; // Color for queued nodes grey
+          color = "#00008B"; // Color for queued nodes grey
         } else if (visitedNodes?.includes(nodeIdAsNumber)) {
           color = "#d90429"; // Color for visited nodes red
         } else {

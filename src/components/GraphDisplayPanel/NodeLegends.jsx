@@ -35,10 +35,10 @@ export default function NodeLegends({ currentAlgorithm }) {
             {currentAlgorithm === "BFS" && (
               <div className="flex items-center space-x-2">
                 <div
-                  className="w-5 h-5 bg-gray-300 rounded-full"
+                  className="w-5 h-5 bg-[#00008B] rounded-full"
                   style={{ transform: "translate(0%, 0%)" }}
                 ></div>
-                <p className="text-gray-300">Queued Node</p>
+                <p className="text-blue-300">Queued Node</p>
               </div>
             )}
 

@@ -180,6 +180,14 @@ export default function FunctionalDisplayPanel({
     const allTraversals = [];
     const stepsAccumulator = []; // Accumulator for all steps across BFS calls
 
+    const temp = BFS(
+      graph,
+      parseInt(sourceNode, 10),
+      visited,
+      stepsAccumulator
+    );
+    allTraversals.push(temp);
+
     for (const node of myNodes) {
       if (!visited[node.id]) {
         const temp = BFS(
