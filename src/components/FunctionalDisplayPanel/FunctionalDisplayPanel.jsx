@@ -439,7 +439,7 @@ export default function FunctionalDisplayPanel({
             <AlgoButton onClick={dfsCall}>DFS</AlgoButton>
             <AlgoButton
               onClick={async () => {
-                await setIsDirected("end"); // Need to await as changing Directed or Undirected resets the canvas
+                await setIsDirected("none"); // Need to await as changing Directed or Undirected resets the canvas
                 dijstrasAlgorithm();
               }}
             >
