@@ -105,14 +105,15 @@ To run this project locally, follow these steps:
 
 ## 🔮 Future Plans
 
-In the next phases of development, I plan to expand the Graph Visualizer by introducing **tree algorithms** and additional graph algorithms to provide a comprehensive educational tool. Planned features include:
+In the next phases of development, we plan to expand the Graph Visualizer by introducing **tree algorithms** and additional graph algorithms to provide a comprehensive educational tool. Planned features include:
 
 - **Tree Algorithms**:
 
   - **Inorder Traversal**
   - **Preorder Traversal**
   - **Postorder Traversal**
-  - These will allow users to visualize common tree traversals used in binary trees and other hierarchical data structures.
+
+These will allow users to visualize common tree traversals used in binary trees and other hierarchical data structures.
 
 - **More Graph Algorithms**:
   - **A\* Search**: For pathfinding in AI and games.
